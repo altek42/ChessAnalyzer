@@ -1,0 +1,17 @@
+{
+  "projects": {
+    "default": "ezamjs-c64b4"
+  },
+  "targets": {
+    "ezamjs-c64b4": {
+      "hosting": {
+        "dev": [
+          "ezamjs-c64b4"
+        ],
+        "beta": [
+          "ezam-beta"
+        ]
+      }
+    }
+  }
+}
