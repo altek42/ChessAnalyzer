@@ -1,12 +1,14 @@
 import { React } from 'react';
-import Provider from 'store/Provider';
-import SignIn from 'modules/SignIn';
+import StoreProvider from 'store/Provider';
+import { RouterProvider, Router } from 'modules/Router';
 
 function App() {
   return (
-    <Provider>
-      <SignIn />
-    </Provider>
+    <StoreProvider>
+      <RouterProvider>
+        <Router />
+      </RouterProvider>
+    </StoreProvider>
   );
 }
 
