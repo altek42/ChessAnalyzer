@@ -1,4 +1,4 @@
-const defaultState = {};
+const defaultState = { isAuthorized: false };
 
 export default (state = defaultState, action) => {
   switch (action.type) {

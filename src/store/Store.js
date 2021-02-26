@@ -7,8 +7,8 @@ import history from 'config/routerHistory';
 import User from './user/UserReducer';
 
 const rootReducer = combineReducers({
-  router: connectRouter(history),
   User,
+  router: connectRouter(history),
 });
 
 const composeEnhancers = composeWithDevTools({

@@ -28,8 +28,5 @@
                 "moduleDirectory": ["node_modules", "src/"]
             }
         }
-    },
-    "ignorePatterns": [
-        "index.js"
-    ]
+    }
 }
