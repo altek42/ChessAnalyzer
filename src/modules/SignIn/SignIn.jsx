@@ -1,39 +1,25 @@
-import {
-  Button, Grid, Paper, TextField,
-} from '@material-ui/core';
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { signIn } from 'services/authService';
+import React from 'react';
+
+import { makeStyles } from '@material-ui/core';
+
+import SigninForm from './components/SigninForm';
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%',
+    backgroundColor: theme.palette.grey[200],
+  },
+}));
 
 const SignIn = () => {
-  const [login, setLogin] = useState('');
-  const [password, setPassword] = useState('');
-
-  const dispatch = useDispatch();
-
+  const classes = useStyles();
   return (
-    <Paper style={{ padding: 5 }}>
-      <Grid container width="400" direction="column" spacing={3}>
-        <Grid item>
-          <TextField variant="outlined" id="login" label="Email" value={login} onChange={(x) => setLogin(x.target.value)} />
-        </Grid>
-        <Grid item>
-          <TextField variant="outlined" id="password" label="Password" type="password" value={password} onChange={(x) => setPassword(x.target.value)} />
-        </Grid>
-        <Grid item>
-          <Button
-            variant="contained"
-            color="primary"
-            fullWidth
-            onClick={() => {
-              dispatch(signIn(login, password));
-            }}
-          >
-            Login!
-          </Button>
-        </Grid>
-      </Grid>
-    </Paper>
+    <div className={classes.root}>
+      <SigninForm />
+    </div>
   );
 };
 

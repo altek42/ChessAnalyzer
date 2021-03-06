@@ -1,7 +1,10 @@
 import React from 'react';
+
 import { Redirect, Route, Switch } from 'react-router-dom';
-import SignIn from 'modules/SignIn';
+
 import NotFound from 'modules/NotFound';
+import SignIn from 'modules/SignIn';
+
 import Authorized from './AuthorizedRouter';
 
 const Router = () => (

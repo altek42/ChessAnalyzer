@@ -1,6 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+
 import { ConnectedRouter } from 'connected-react-router';
+import PropTypes from 'prop-types';
+
 import history from 'config/routerHistory';
 
 const RouterProvider = ({ children }) => (

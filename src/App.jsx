@@ -1,6 +1,7 @@
 import { React } from 'react';
-import StoreProvider from 'store/Provider';
+
 import { RouterProvider, Router } from 'modules/Router';
+import StoreProvider from 'store/Provider';
 
 function App() {
   return (

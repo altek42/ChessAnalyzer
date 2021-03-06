@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
-import { Route } from 'react-router-dom';
-import Home from 'modules/Home';
-import { useDispatch, useSelector } from 'react-redux';
+
 import { push } from 'connected-react-router';
+import { useDispatch, useSelector } from 'react-redux';
+import { Route } from 'react-router-dom';
+
+import Home from 'modules/Home';
 
 const AuthorizedRouter = () => {
   const isAuthorized = useSelector((state) => state.User.isAuthorized);

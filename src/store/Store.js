@@ -1,7 +1,8 @@
+import { connectRouter, routerMiddleware } from 'connected-react-router';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
-import { connectRouter, routerMiddleware } from 'connected-react-router';
+
 import history from 'config/routerHistory';
 
 import User from './user/UserReducer';

@@ -1,4 +1,5 @@
 import { push } from 'connected-react-router';
+
 import { auth } from './firebaseService';
 
 export const signIn = (login, password) => async (dispatch) => {
