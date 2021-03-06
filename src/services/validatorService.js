@@ -14,10 +14,13 @@ export const validate = (key, values, validators) => {
     const result = validatorFunc[validators.shift()](value);
     if (result) return result;
   }
-  return '';
+  return undefined;
 };
 
 export const validateRules = (values, rules) => Object.keys(rules).reduce((acc, key) => {
-  acc[key] = validate(key, values, rules[key]);
+  const error = validate(key, values, rules[key]);
+  if (error) {
+    acc[key] = error;
+  }
   return acc;
 }, {});
