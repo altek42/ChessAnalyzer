@@ -2,7 +2,7 @@ import React from 'react';
 
 import { makeStyles } from '@material-ui/core';
 
-import SigninForm from './components/SigninForm';
+import SigninForm from './form/SignInForm';
 
 const useStyles = makeStyles((theme) => ({
   root: {

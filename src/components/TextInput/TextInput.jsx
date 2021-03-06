@@ -24,7 +24,7 @@ const TextInput = ({
       onBlur={onBlur}
       onChange={onChange}
       fullWidth
-      error={touched && error}
+      error={touched && Boolean(error)}
       helperText={touched && error}
     />
   );

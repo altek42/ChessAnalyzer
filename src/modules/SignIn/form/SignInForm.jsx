@@ -2,19 +2,19 @@ import React from 'react';
 
 import { Form } from 'components';
 
-import FormView from './FormView';
 import initialValues from './initialValues.json';
 import onSubmit from './onSubmit';
+import SignInFormView from './SignInFormView';
 import validate from './validate';
 
-const SigninForm = () => (
+const SignInForm = () => (
   <Form
     initialValues={initialValues}
     onSubmit={onSubmit}
     validate={validate}
   >
-    <FormView />
+    <SignInFormView />
   </Form>
 );
 
-export default SigninForm;
+export default SignInForm;

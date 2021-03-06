@@ -6,7 +6,7 @@ import { Button, TextInput } from 'components';
 
 import useStyles from './useStyles';
 
-const FormView = () => {
+const SignInFormView = () => {
   const classes = useStyles();
 
   return (
@@ -32,4 +32,4 @@ const FormView = () => {
     </Paper>
   );
 };
-export default FormView;
+export default SignInFormView;
