@@ -3,14 +3,16 @@ import { push } from 'connected-react-router';
 import { auth } from './firebaseService';
 
 const authUser = async (dispatch, user) => {
-  dispatch({
-    type: 'AUTH_SIGNIN',
-    payload: {
-      isAuthorized: true,
-      email: user.email,
-      uid: user.uid,
-    },
-  });
+  if (user) {
+    dispatch({
+      type: 'AUTH_SIGNIN',
+      payload: {
+        isAuthorized: true,
+        email: user.email,
+        uid: user.uid,
+      },
+    });
+  }
 };
 
 export const signIn = (login, password) => async (dispatch) => {
