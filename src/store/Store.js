@@ -5,10 +5,12 @@ import thunk from 'redux-thunk';
 
 import history from 'config/routerHistory';
 
+import Profile from './user/ProfileReducer';
 import User from './user/UserReducer';
 
 const rootReducer = combineReducers({
   User,
+  Profile,
   router: connectRouter(history),
 });
 

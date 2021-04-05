@@ -9,7 +9,7 @@ import UserPanel from './components/UserPanel';
 const Home = () => (
   <PageContainer>
     <Grid container>
-      <Grid item xs={4}>
+      <Grid item xs={5}>
         <UserPanel />
       </Grid>
     </Grid>
