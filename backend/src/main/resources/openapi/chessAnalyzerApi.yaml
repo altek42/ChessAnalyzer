@@ -8,44 +8,34 @@ info:
 servers:
   - url: /api/v1
 tags:
-  - name: testEn
-    description: testEn
+  - name: game
+    description: game
 paths:
-  /testEn:
-    get:
+  /game/update:
+    post:
       tags:
-        - testEn
-      summary: testEn
-      description: testEn
-      operationId: testEn
-      responses:
-        '200':
-          description: Successful operation
-    put:
-      tags:
-        - testEn
-      summary: Update an existing pet
-      description: Update an existing pet by Id
-      operationId: updatePet
+        - game
+      summary: Update game data
+      description: Update game data
+      operationId: updateGameData
       requestBody:
-        description: Update an existent pet in the store
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Pet'
+              $ref: '#/components/schemas/UpdateGameAction'
       responses:
         '200':
           description: Successful operation
 
+
 components:
   schemas:
-    Pet:
+    UpdateGameAction:
       type: object
       properties:
-        id:
-          type: integer
-          format: int64
-          example: 10
-        name:
+        month:
           type: string
-          example: doggie
+          pattern: (0[1-9]|1[012])
+        year:
+          type: string
+          pattern: \d{4}
