@@ -15,24 +15,35 @@
 	<description>CHESS ANALYZER</description>
 	<properties>
 		<java.version>17</java.version>
+		<project.resources>${project.basedir}/src/main/resources</project.resources>
+		<project.resources.properties>${project.resources}/application.properties</project.resources.properties>
 		<project.base.package.name>${project.groupId}.${project.artifactId}</project.base.package.name>
 		<project.openapi.package.name>${project.base.package.name}.openapi</project.openapi.package.name>
 		<project.openapi.client.package.name>${project.openapi.package.name}.client</project.openapi.client.package.name>
-		<project.openapi.dir>${project.basedir}/src/main/resources/openapi</project.openapi.dir>
+		<project.openapi.dir>${project.basedir}/src/openapi</project.openapi.dir>
 	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-neo4j</artifactId>
+			<version>2.6.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+			<version>2.6.1</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+			<version>2.6.1</version>
+		</dependency>
+
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
+			<version>2.6.1</version>
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
@@ -49,13 +60,24 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
+			<version>2.6.1</version>
 		</dependency>
 		<dependency>
 			<groupId>io.swagger.core.v3</groupId>
 			<artifactId>swagger-annotations</artifactId>
 			<version>2.1.11</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>1.5.2</version>
+		</dependency>
 
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.3.1</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -121,6 +143,31 @@
 						</configuration>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.javalite</groupId>
+				<artifactId>db-migrator-maven-plugin</artifactId>
+				<version>3.0-j11</version>
+				<configuration>
+					<environments>project.database.posgresql</environments>
+					<configFile>${project.resources.properties}</configFile>
+				</configuration>
+				<executions>
+					<execution>
+						<id>migrations</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>migrate</goal>
+						</goals>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>org.postgresql</groupId>
+						<artifactId>postgresql</artifactId>
+						<version>42.3.1</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 		</plugins>
 	</build>

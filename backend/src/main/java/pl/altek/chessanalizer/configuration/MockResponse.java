@@ -13,6 +13,11 @@ import java.util.UUID;
 @Configuration
 public class MockResponse {
 
+    @Bean("mockUserId")
+    public UUID mockUserId() {
+        return UUID.fromString("09014f5d-1f4b-4e7e-a64c-51d0938d3567");
+    }
+
     @Bean("mockedGameList")
     public GameList mockedGameListResponse(){
         GameList gameList = new GameList();

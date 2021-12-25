@@ -1,13 +1,34 @@
 package pl.altek.chessanalizer;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import pl.altek.chessanalizer.db.entity.UserEntity;
+import pl.altek.chessanalizer.repository.UserRepository;
+
+import java.util.UUID;
 
 @SpringBootApplication
 public class Application {
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
+
+//	@Bean("myTest")
+//	public String myTest(UserRepository userRepository){
+//		UserEntity user = new UserEntity();
+//		user.setUsername("Altek42");
+//		user.setEmail("altek42.altek42@gmail.com");
+//		user.setChessId(UUID.fromString("d15b424c-2726-11eb-9577-df5e0a04388a"));
+//		userRepository.save(user);
+//		return "OK";
+//	}
+//
+//	@Bean
+//	public String startTest(@Qualifier("myTest") String myTest){
+//		return myTest;
+//	}
 
 //	@Bean("myTest")
 //	public String myTest(PlayerApi playerApi){

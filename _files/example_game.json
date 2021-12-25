@@ -28,3 +28,32 @@
 
 
 pgn - (\. (.*?)? {)
+
+
+{
+  "url": "https://www.chess.com/game/live/6187081399",
+  "pgn": "[Event \"Live Chess\"]\n[Site \"Chess.com\"]\n[Date \"2021.01.09\"]\n[Round \"-\"]\n[White \"Rovhatt\"]\n[Black \"Altek42\"]\n[Result \"1-0\"]\n[CurrentPosition \"r1b1k2r/pppn2p1/1b2p2p/7q/3P4/2P2PPB/PP2Q2P/RN2K1NR w KQkq -\"]\n[Timezone \"UTC\"]\n[ECO \"C00\"]\n[ECOUrl \"https://www.chess.com/openings/French-Defense\"]\n[UTCDate \"2021.01.09\"]\n[UTCTime \"15:24:32\"]\n[WhiteElo \"871\"]\n[BlackElo \"818\"]\n[TimeControl \"600\"]\n[Termination \"Rovhatt won by resignation\"]\n[StartTime \"15:24:32\"]\n[EndDate \"2021.01.09\"]\n[EndTime \"15:28:38\"]\n[Link \"https://www.chess.com/game/live/6187081399\"]\n\n1. e4 {[%clk 0:10:00]} 1... e6 {[%clk 0:09:59]} 2. c3 {[%clk 0:09:55.1]} 2... d5 {[%clk 0:09:49.2]} 3. f3 {[%clk 0:09:37.7]} 3... Nf6 {[%clk 0:09:32.2]} 4. Qe2 {[%clk 0:09:20.3]} 4... Bc5 {[%clk 0:09:03.3]} 5. d4 {[%clk 0:09:15.7]} 5... Bb6 {[%clk 0:08:46.6]} 6. Bg5 {[%clk 0:09:14.1]} 6... h6 {[%clk 0:08:34.6]} 7. Bxf6 {[%clk 0:09:07.8]} 7... Qxf6 {[%clk 0:08:25.4]} 8. exd5 {[%clk 0:08:58.9]} 8... Qh4+ {[%clk 0:08:09.2]} 9. g3 {[%clk 0:08:56]} 9... Qh5 {[%clk 0:07:45.9]} 10. Bh3 {[%clk 0:08:52.8]} 10... Nd7 {[%clk 0:07:20.6]} 11. dxe6 {[%clk 0:08:50.4]} 11... fxe6 {[%clk 0:07:18.9]} 1-0\n",
+  "time_control": "600",
+  "end_time": 1610206118,
+  "rated": true,
+  "tcn": "mC0SksZJnv!Tdm9IlBIPcM3VMT7TCJTFowFNfx5ZJS1S",
+  "uuid": "c364f884-528e-11eb-bc90-0069e4010001",
+  "initial_setup": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+  "fen": "r1b1k2r/pppn2p1/1b2p2p/7q/3P4/2P2PPB/PP2Q2P/RN2K1NR w KQkq -",
+  "time_class": "rapid",
+  "rules": "chess",
+  "white": {
+      "rating": 871,
+      "result": "win",
+      "@id": "https://api.chess.com/pub/player/rovhatt",
+      "username": "Rovhatt",
+      "uuid": "cc533c98-1941-11eb-8b38-937ac2ab51c4"
+  },
+  "black": {
+      "rating": 818,
+      "result": "resigned",
+      "@id": "https://api.chess.com/pub/player/altek42",
+      "username": "Altek42",
+      "uuid": "d15b424c-2726-11eb-9577-df5e0a04388a"
+  }
+}
