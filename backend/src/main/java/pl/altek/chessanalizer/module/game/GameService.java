@@ -40,7 +40,7 @@ public class GameService {
             return;
         }
         List<String> moves = extractMovesFromPGN(game.getPgn());
-        
+
         insertGameEntityIntoDB(gameId);
     }
 
