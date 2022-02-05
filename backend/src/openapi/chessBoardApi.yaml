@@ -1,0 +1,105 @@
+openapi: 3.0.0
+paths:
+  "/chess/{sessionId}":
+    get:
+      operationId: ChessController_getBoardAscii
+      parameters:
+        - name: sessionId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+      tags:
+        &a1
+        - chess
+  /chess/move:
+    post:
+      operationId: ChessController_moveAction
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MoveDto"
+      responses:
+        "201":
+          description: ""
+      tags: *a1
+  "/chess/fen/{sessionId}":
+    get:
+      operationId: ChessController_getFen
+      parameters:
+        - name: sessionId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+      tags: *a1
+  /session:
+    post:
+      operationId: SessionController_createSession
+      parameters: []
+      responses:
+        "201":
+          description: ""
+      tags:
+        &a2
+        - session
+    get:
+      operationId: SessionController_sessionInfoAll
+      parameters: []
+      responses:
+        "200":
+          description: ""
+      tags: *a2
+  "/session/{sessionId}":
+    get:
+      operationId: SessionController_sessionInfo
+      parameters:
+        - name: sessionId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+      tags: *a2
+    delete:
+      operationId: SessionController_deleteSession
+      parameters:
+        - name: sessionId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+      tags: *a2
+info:
+  title: Board API
+  description: The board API description
+  version: "1.0"
+  contact: {}
+tags: []
+servers: []
+components:
+  schemas:
+    MoveDto:
+      type: object
+      properties:
+        sessionId:
+          type: string
+        move:
+          type: string
+      required:
+        - sessionId
+        - move

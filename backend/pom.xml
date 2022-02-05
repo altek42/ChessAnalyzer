@@ -142,6 +142,29 @@
 							</configOptions>
 						</configuration>
 					</execution>
+					<execution>
+						<id>chessBoardApi</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<inputSpec>${project.openapi.dir}/chessBoardApi.yaml</inputSpec>
+							<language>java</language>
+							<library>resttemplate</library>
+							<modelPackage>${project.openapi.client.package.name}.chessboardapi.model</modelPackage>
+							<apiPackage>${project.openapi.client.package.name}.chessboardapi.api</apiPackage>
+							<invokerPackage>${project.openapi.client.package.name}.chessboardapi</invokerPackage>
+
+							<generateApiTests>false</generateApiTests>
+							<generateModelTests>false</generateModelTests>
+							<generateApiDocumentation>false</generateApiDocumentation>
+							<generateModelDocumentation>false</generateModelDocumentation>
+							<configOptions>
+								<dateLibrary>java8</dateLibrary>
+								<dateLibrary>java8-localdatetime</dateLibrary>
+							</configOptions>
+						</configuration>
+					</execution>
 				</executions>
 			</plugin>
 			<plugin>

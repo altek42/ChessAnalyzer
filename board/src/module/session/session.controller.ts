@@ -25,7 +25,7 @@ export class SessionController {
     return this.sessionService.getAllSessionDto();
   }
 
-  @Delete()
+  @Delete(':sessionId')
   deleteSession(@Param('sessionId') sessionId: string) {
     this.sessionService.deleteSession(sessionId);
   }
