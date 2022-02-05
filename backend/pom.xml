@@ -2,6 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+	<packaging>pom</packaging>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
@@ -13,186 +14,20 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>chessanalizer</name>
 	<description>CHESS ANALYZER</description>
+
+	<modules>
+		<module>chessanalizer-api</module>
+		<module>chessanalizer-main</module>
+	</modules>
+
 	<properties>
 		<java.version>17</java.version>
 		<project.resources>${project.basedir}/src/main/resources</project.resources>
 		<project.resources.properties>${project.resources}/application.properties</project.resources.properties>
-		<project.base.package.name>${project.groupId}.${project.artifactId}</project.base.package.name>
+		<project.base.package.name>pl.altek.chessanalizer</project.base.package.name>
 		<project.openapi.package.name>${project.base.package.name}.openapi</project.openapi.package.name>
 		<project.openapi.client.package.name>${project.openapi.package.name}.client</project.openapi.client.package.name>
 		<project.openapi.dir>${project.basedir}/src/openapi</project.openapi.dir>
 	</properties>
-	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-neo4j</artifactId>
-			<version>2.6.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-			<version>2.6.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-			<version>2.6.1</version>
-		</dependency>
-
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<version>2.6.1</version>
-			<scope>runtime</scope>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-validation</artifactId>
-			<version>2.6.1</version>
-		</dependency>
-		<dependency>
-			<groupId>io.swagger.core.v3</groupId>
-			<artifactId>swagger-annotations</artifactId>
-			<version>2.1.11</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springdoc</groupId>
-			<artifactId>springdoc-openapi-ui</artifactId>
-			<version>1.5.2</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<version>42.3.1</version>
-		</dependency>
-	</dependencies>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<version>2.6.1</version>
-				<configuration>
-					<excludes>
-						<exclude>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</exclude>
-					</excludes>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>io.swagger.codegen.v3</groupId>
-				<artifactId>swagger-codegen-maven-plugin</artifactId>
-				<version>3.0.30</version>
-				<executions>
-					<execution>
-						<id>mainApi</id>
-						<goals>
-							<goal>generate</goal>
-						</goals>
-						<configuration>
-							<inputSpec>${project.openapi.dir}/chessAnalyzerApi.yaml</inputSpec>
-							<language>spring</language>
-							<modelPackage>${project.openapi.package.name}.model</modelPackage>
-							<apiPackage>${project.openapi.package.name}.api</apiPackage>
-							<generateSupportingFiles>false</generateSupportingFiles>
-							<generateApiTests>false</generateApiTests>
-							<generateModelTests>false</generateModelTests>
-							<configOptions>
-								<delegatePattern>true</delegatePattern>
-								<dateLibrary>java8-localdatetime</dateLibrary>
-								<java8>true</java8>
-							</configOptions>
-						</configuration>
-					</execution>
-					<execution>
-						<id>chesscomApi</id>
-						<goals>
-							<goal>generate</goal>
-						</goals>
-						<configuration>
-							<inputSpec>${project.openapi.dir}/chessApi.yaml</inputSpec>
-							<language>java</language>
-							<library>resttemplate</library>
-							<modelPackage>${project.openapi.client.package.name}.chessapi.model</modelPackage>
-							<apiPackage>${project.openapi.client.package.name}.chessapi.api</apiPackage>
-
-							<generateApiTests>false</generateApiTests>
-							<generateModelTests>false</generateModelTests>
-							<generateApiDocumentation>false</generateApiDocumentation>
-							<generateModelDocumentation>false</generateModelDocumentation>
-							<configOptions>
-								<dateLibrary>java8</dateLibrary>
-								<dateLibrary>java8-localdatetime</dateLibrary>
-							</configOptions>
-						</configuration>
-					</execution>
-					<execution>
-						<id>chessBoardApi</id>
-						<goals>
-							<goal>generate</goal>
-						</goals>
-						<configuration>
-							<inputSpec>${project.openapi.dir}/chessBoardApi.yaml</inputSpec>
-							<language>java</language>
-							<library>resttemplate</library>
-							<modelPackage>${project.openapi.client.package.name}.chessboardapi.model</modelPackage>
-							<apiPackage>${project.openapi.client.package.name}.chessboardapi.api</apiPackage>
-							<invokerPackage>${project.openapi.client.package.name}.chessboardapi</invokerPackage>
-
-							<generateApiTests>false</generateApiTests>
-							<generateModelTests>false</generateModelTests>
-							<generateApiDocumentation>false</generateApiDocumentation>
-							<generateModelDocumentation>false</generateModelDocumentation>
-							<configOptions>
-								<dateLibrary>java8</dateLibrary>
-								<dateLibrary>java8-localdatetime</dateLibrary>
-							</configOptions>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.javalite</groupId>
-				<artifactId>db-migrator-maven-plugin</artifactId>
-				<version>3.0-j11</version>
-				<configuration>
-					<environments>project.database.posgresql</environments>
-					<configFile>${project.resources.properties}</configFile>
-				</configuration>
-				<executions>
-					<execution>
-						<id>migrations</id>
-						<phase>validate</phase>
-						<goals>
-							<goal>migrate</goal>
-						</goals>
-					</execution>
-				</executions>
-				<dependencies>
-					<dependency>
-						<groupId>org.postgresql</groupId>
-						<artifactId>postgresql</artifactId>
-						<version>42.3.1</version>
-					</dependency>
-				</dependencies>
-			</plugin>
-		</plugins>
-	</build>
 
 </project>
