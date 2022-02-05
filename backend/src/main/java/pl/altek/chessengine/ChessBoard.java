@@ -5,6 +5,7 @@ import pl.altek.chessengine.enumerate.ChessPieceColor;
 import pl.altek.chessengine.enumerate.ChessPieceType;
 import pl.altek.chessengine.model.ChessNextMove;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ChessBoard {
@@ -52,7 +53,7 @@ public class ChessBoard {
         return color;
     }
 
-    private void move(String moveValue){
+    public void move(String moveValue){
         ChessNextMove nextMove = parseNextMove(moveValue);
         ChessPiece pieceToMove = nextMove.getPiece();
         if(pieceToMove.getType().equals(ChessPieceType.PAWN)){
@@ -60,9 +61,23 @@ public class ChessBoard {
         }
     }
 
+    //    e4, exd5
     private void movePawn(ChessNextMove nextMove){
         ChessPieceColor color = nextMove.getPieceColor();
+        Integer lastColumnIndex = nextMove.getLastColumnIndex();
 
+        boolean isCapture = null != lastColumnIndex;
+        Integer actualPositionColumn = isCapture ? lastColumnIndex : nextMove.getColumnIndex();
+        Integer actualPositionRow = nextMove.getRowIndex() + color.getDirection();
+        ChessPiece piece = this.board[actualPositionRow][actualPositionColumn];
+
+        if(!isCapture && null == piece) {
+            actualPositionRow += color.getDirection();
+            piece = this.board[actualPositionRow][actualPositionColumn];
+        }
+
+        this.board[actualPositionRow][actualPositionColumn] = null;
+        this.board[nextMove.getRowIndex()][nextMove.getColumnIndex()] = piece;
     }
 
     // Posible moves: Bg5, e4, Qxf6, exd5, O-O-O, O-O, Nfd4, Rab3
@@ -84,14 +99,18 @@ public class ChessBoard {
         if(secondLetter.equals(PIECE_CAPTURES_CHAR)){
             column = symbol.charAt(2);
             row = symbol.charAt(3);
-            if(ChessNextMove.isColumn(row)){
-                lastColumn = column;
-                column = row;
-                row = symbol.charAt(4);
+            if(piece.equals(ChessPieceType.PAWN)){
+                lastColumn = firstLetter;
             }
         } else if(!piece.equals(ChessPieceType.PAWN)) {
             column = symbol.charAt(1);
             row = symbol.charAt(2);
+
+            if(ChessNextMove.isColumn(row)){
+                lastColumn = column;
+                column = row;
+                row = symbol.charAt(3);
+            }
         }
         return new ChessNextMove(
                 symbol,

@@ -1,12 +1,17 @@
 package pl.altek.chessengine.enumerate;
 
+import lombok.Getter;
+
+@Getter
 public enum ChessPieceColor {
-    WHITE("w"),
-    BLACK("b");
+    WHITE("w", -1),
+    BLACK("b", 1);
 
     private String value;
+    private Integer direction;
 
-    ChessPieceColor(String value) {
+    ChessPieceColor(String value, Integer direction) {
         this.value = value;
+        this.direction = direction;
     }
 }
