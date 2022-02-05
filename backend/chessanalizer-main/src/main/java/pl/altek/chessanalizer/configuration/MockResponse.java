@@ -2,9 +2,9 @@ package pl.altek.chessanalizer.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import pl.altek.chessanalizer.openapi.client.chessapi.model.Game;
-import pl.altek.chessanalizer.openapi.client.chessapi.model.GameList;
-import pl.altek.chessanalizer.openapi.client.chessapi.model.GamePlayer;
+import pl.altek.chessanalizer.openapi.client.chesscomapi.model.Game;
+import pl.altek.chessanalizer.openapi.client.chesscomapi.model.GameList;
+import pl.altek.chessanalizer.openapi.client.chesscomapi.model.GamePlayer;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import pl.altek.chessanalizer.db.entity.GameEntity;
-import pl.altek.chessanalizer.openapi.client.chessapi.model.Game;
-import pl.altek.chessanalizer.openapi.client.chessapi.model.GameList;
+import pl.altek.chessanalizer.openapi.client.chesscomapi.model.Game;
+import pl.altek.chessanalizer.openapi.client.chesscomapi.model.GameList;
 import pl.altek.chessanalizer.openapi.model.UpdateGameAction;
 import pl.altek.chessanalizer.repository.GameRepository;
 
