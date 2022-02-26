@@ -11,9 +11,12 @@ paths:
             type: string
       responses:
         "200":
-          description: ""
+          description: Get board status in ascii
+          content:
+            application/json:
+              schema:
+                type: string
       tags:
-        &a1
         - chess
   /chess/move:
     post:
@@ -28,7 +31,8 @@ paths:
       responses:
         "201":
           description: ""
-      tags: *a1
+      tags:
+        - chess
   "/chess/fen/{sessionId}":
     get:
       operationId: ChessController_getFen
@@ -40,25 +44,40 @@ paths:
             type: string
       responses:
         "200":
-          description: ""
-      tags: *a1
+          description: Get fen from actual board state
+          content:
+            application/json:
+              schema:
+                type: string
+      tags:
+        - chess
   /session:
     post:
       operationId: SessionController_createSession
       parameters: []
       responses:
         "201":
-          description: ""
+          description: Create new session
+          content:
+            application/json:
+              schema:
+                type: string
       tags:
-        &a2
+        &a1
         - session
     get:
       operationId: SessionController_sessionInfoAll
       parameters: []
       responses:
         "200":
-          description: ""
-      tags: *a2
+          description: List of sessions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SessionDto"
+      tags: *a1
   "/session/{sessionId}":
     get:
       operationId: SessionController_sessionInfo
@@ -70,8 +89,12 @@ paths:
             type: string
       responses:
         "200":
-          description: ""
-      tags: *a2
+          description: Show session info
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SessionDto"
+      tags: *a1
     delete:
       operationId: SessionController_deleteSession
       parameters:
@@ -83,7 +106,7 @@ paths:
       responses:
         "200":
           description: ""
-      tags: *a2
+      tags: *a1
 info:
   title: Board API
   description: The board API description
@@ -103,3 +126,6 @@ components:
       required:
         - sessionId
         - move
+    SessionDto:
+      type: object
+      properties: {}

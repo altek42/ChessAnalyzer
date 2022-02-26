@@ -20,7 +20,8 @@
 		<module>chessanalizer-chessboard-api</module>
 		<module>chessanalizer-chesscom-api</module>
 		<module>chessanalizer-main</module>
-	</modules>
+        <module>chessanalizer-db</module>
+    </modules>
 
 	<properties>
 		<java.version>17</java.version>

@@ -1,4 +1,4 @@
-package pl.altek.chessanalizer.repository;
+package pl.altek.chessanalizer.db.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
