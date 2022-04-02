@@ -1,5 +1,6 @@
 package pl.altek.chessanalizer.module.game;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Async;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.DigestUtils;
 import pl.altek.chessanalizer.db.entity.GameEntity;
 import pl.altek.chessanalizer.db.node.StateNode;
+import pl.altek.chessanalizer.db.relation.MoveRelation;
 import pl.altek.chessanalizer.db.repository.GameRepository;
 import pl.altek.chessanalizer.db.repository.StateRepository;
 import pl.altek.chessanalizer.openapi.client.chessboardapi.api.ChessApi;
@@ -14,6 +16,7 @@ import pl.altek.chessanalizer.openapi.client.chessboardapi.api.SessionApi;
 import pl.altek.chessanalizer.openapi.client.chessboardapi.model.MoveDto;
 import pl.altek.chessanalizer.openapi.client.chesscomapi.model.Game;
 
+import javax.transaction.Transactional;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +26,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Component
+@Slf4j
 public class GameAnalizer {
 
     private final Pattern PGN_MOVE_REGEX = Pattern.compile("\\. (.*?)? \\{");
@@ -44,24 +48,64 @@ public class GameAnalizer {
     private SessionApi sessionApi;
 
     @Async("gameAnalizerExecutor")
+    @Transactional
     public void processGame(Game game){
+        log.info("Start process game: " + game.getUuid());
         List<String> moves = extractMovesFromPGN(game.getPgn());
 
         String session = sessionApi.sessionControllerCreateSession();
-        moves.forEach(x -> processSingleMove(session, x));
-        insertGameEntityIntoDB(game.getUuid());
+        String initalBoradFen = chessApi.chessControllerGetFen(session);
+        StateNode currentState = findOrCreateStateNode(initalBoradFen);
+
+        for(String move : moves){
+            moveOnBoard(session, move);
+            StateNode nextState = moveToNextState(currentState, session, move);
+            currentState = nextState;
+        }
+
+//        insertGameEntityIntoDB(game.getUuid());
+        log.info("End process game: " + game.getUuid());
     }
 
-    private void processSingleMove(String session, String move){
+    private StateNode moveToNextState(StateNode state, String session, String move){
+        Optional<MoveRelation> moveRelationOp = findMoveInState(state, move);
+        MoveRelation moveRelation = moveRelationOp.orElseGet(
+                () -> createNewRelation(state, session, move)
+        );
+        moveRelation.increment();
+        stateRepository.save(state);
+
+        return moveRelation.getState();
+    }
+
+    private Optional<MoveRelation> findMoveInState(StateNode state, String move) {
+        List<MoveRelation> stateMoves = state.getMoves();
+        return stateMoves.stream().filter(x -> x.getName().equals(move)).findFirst();
+    }
+
+    private MoveRelation createNewRelation(StateNode state, String session, String move){
+        String nextMoveFen = chessApi.chessControllerGetFen(session);
+        StateNode nextState = findOrCreateStateNode(nextMoveFen);
+
+        MoveRelation moveRelation = new MoveRelation();
+        moveRelation.setName(move);
+        moveRelation.setQuantity(0L);
+        moveRelation.setState(nextState);
+
+        state.addMove(moveRelation);
+        stateRepository.save(state);
+        return moveRelation;
+    }
+
+
+    private void moveOnBoard(String session, String move){
         MoveDto moveDto = new MoveDto();
         moveDto.setSessionId(session);
-        moveDto.move(move);
+        moveDto.setMove(move);
         chessApi.chessControllerMoveAction(moveDto);
-        String fen = chessApi.chessControllerGetFen(session);
-        saveMove(fen, move);
     }
 
-    private void saveMove(String fen, String move){
+    private StateNode findOrCreateStateNode(String fen) {
         String hash = DigestUtils.md5DigestAsHex(fen.getBytes(StandardCharsets.UTF_8));
         Optional<StateNode> nodeOp = stateRepository.findById(hash);
         StateNode state = nodeOp.orElseGet(() -> {
@@ -69,11 +113,10 @@ public class GameAnalizer {
             node.setHash(hash);
             node.setFen(fen);
             node.setMoves(new ArrayList<>());
+            stateRepository.save(node);
             return node;
-            // to trzeba jeszcze zapisać do bazy
-            // ale powinno już istnieć bo przy relacji powinno się tworzyć
         });
-        // Brakuje ruchu poprzedniego
+        return state;
     }
 
     private void insertGameEntityIntoDB(UUID gameId){

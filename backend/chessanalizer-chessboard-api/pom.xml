@@ -35,7 +35,7 @@
             <plugin>
                 <groupId>io.swagger.codegen.v3</groupId>
                 <artifactId>swagger-codegen-maven-plugin</artifactId>
-                <version>3.0.30</version>
+                <version>3.0.33</version>
                 <executions>
                     <execution>
                         <id>chessBoardApi</id>
@@ -43,7 +43,12 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${project.openapi.dir}/chessBoardApi.yaml</inputSpec>
+                            <inputSpec>
+                                ${project.openapi.dir}/chessBoardApi.yaml
+                            </inputSpec>
+                            <templateDirectory>
+                                ${project.basedir}/../openapi/templates/resttemplate
+                            </templateDirectory>
                             <language>java</language>
                             <library>resttemplate</library>
                             <modelPackage>${project.openapi.client.package.name}.chessboardapi.model</modelPackage>

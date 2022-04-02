@@ -21,4 +21,8 @@ public class MoveRelation {
     private String name;
 
     private Long quantity;
+
+    public void increment(){
+        this.quantity += 1L;
+    }
 }

@@ -6,7 +6,6 @@ import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
 import org.springframework.data.neo4j.core.schema.Relationship.Direction;
 import pl.altek.chessanalizer.db.relation.MoveRelation;
-import pl.altek.chessanalizer.enumerate.Player;
 
 import java.util.List;
 
@@ -18,9 +17,10 @@ public class StateNode {
 
     private String fen;
 
-    private Player nextPlayer;
-
     @Relationship(type="MOVE", direction = Direction.OUTGOING)
     private List<MoveRelation> moves;
 
+    public void addMove(MoveRelation move){
+        this.getMoves().add(move);
+    }
 }
