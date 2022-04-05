@@ -2,9 +2,8 @@ package pl.altek.chessanalizer.module.game;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import pl.altek.chessanalizer.db.entity.GameEntity;
+import pl.altek.chessanalizer.module.game.analizer.GameAnalizer;
 import pl.altek.chessanalizer.openapi.client.chesscomapi.api.PlayerApi;
 import pl.altek.chessanalizer.openapi.client.chesscomapi.model.Game;
 import pl.altek.chessanalizer.openapi.client.chesscomapi.model.GameList;
@@ -13,7 +12,6 @@ import pl.altek.chessanalizer.db.repository.GameRepository;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.regex.Pattern;
 
 @Service
 @Slf4j

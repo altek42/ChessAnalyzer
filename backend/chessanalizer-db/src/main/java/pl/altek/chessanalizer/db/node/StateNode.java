@@ -17,10 +17,17 @@ public class StateNode {
 
     private String fen;
 
-    @Relationship(type="MOVE", direction = Direction.OUTGOING)
-    private List<MoveRelation> moves;
+    @Relationship(type="PLAYER_MOVE", direction = Direction.OUTGOING)
+    private List<MoveRelation> playerMoves;
 
-    public void addMove(MoveRelation move){
-        this.getMoves().add(move);
+    @Relationship(type="ENEMY_MOVE", direction = Direction.OUTGOING)
+    private List<MoveRelation> enemyMoves;
+
+    public void addPlayerMove(MoveRelation move){
+        this.getPlayerMoves().add(move);
+    }
+
+    public void addEnemyMove(MoveRelation move){
+        this.getEnemyMoves().add(move);
     }
 }
