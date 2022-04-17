@@ -21,12 +21,11 @@
 		<module>chessanalizer-chesscom-api</module>
 		<module>chessanalizer-main</module>
         <module>chessanalizer-db</module>
+<!--        <module>chessanalizer-auth</module>-->
     </modules>
 
 	<properties>
 		<java.version>17</java.version>
-		<project.resources>${project.basedir}/src/main/resources</project.resources>
-		<project.resources.properties>${project.resources}/application.properties</project.resources.properties>
 		<project.base.package.name>pl.altek.chessanalizer</project.base.package.name>
 		<project.openapi.package.name>${project.base.package.name}.openapi</project.openapi.package.name>
 		<project.openapi.client.package.name>${project.openapi.package.name}.client</project.openapi.client.package.name>

@@ -15,6 +15,9 @@ public class UserEntity {
     @Column(name = "username", nullable = true, length = 64)
     private String username;
     @Basic
+    @Column(name = "password", nullable = false, length = 60)
+    private String password;
+    @Basic
     @Column(name = "email", nullable = true, length = 320)
     private String email;
     @Basic
@@ -64,5 +67,13 @@ public class UserEntity {
     @Override
     public int hashCode() {
         return Objects.hash(id, username, email, chessId);
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

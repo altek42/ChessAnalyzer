@@ -5,13 +5,11 @@ info:
   description: |-
     This is API for Chess Analyzer
 
-servers:
-  - url: /api/v1
 tags:
   - name: game
     description: game
 paths:
-  /game/update:
+  /api/v1/game/update:
     post:
       tags:
         - game
