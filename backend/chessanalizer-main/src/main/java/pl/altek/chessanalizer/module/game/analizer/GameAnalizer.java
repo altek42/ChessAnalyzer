@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.util.DigestUtils;
+import pl.altek.chessanalizer.common.ProgressCounter;
 import pl.altek.chessanalizer.db.entity.GameEntity;
 import pl.altek.chessanalizer.db.node.StateNode;
 import pl.altek.chessanalizer.db.relation.MoveRelation;
@@ -54,21 +55,27 @@ public class GameAnalizer {
 
     @Async("gameAnalizerExecutor")
     @Transactional
-    public void processGame(Game game){
-        log.info("Start process game: " + game.getUuid());
+    public void processGame(Game game, ProgressCounter progressCounter){
+        log.info("Start process game ["+progressCounter.getProgress()+"/"+progressCounter.getSize()+"]: " + game.getUuid());
+        long timeA = System.currentTimeMillis();
         List<String> moves = extractMovesFromPGN(game.getPgn());
 
         Context context = initializeContext(game);
 
-        for(String move : moves){
+        int size = moves.size();
+        for (int i = 0; i < size; i++) {
+            String move = moves.get(i);
+            long timeMoveA = System.currentTimeMillis();
             context.setMove(move);
             moveOnBoard(context);
             moveToNextState(context);
             context.toggleIsPlayerMove();
+            long timeMoveB = System.currentTimeMillis();
+            log.info("Move "+(i+1)+"/"+size+" [" + (timeMoveB - timeMoveA) + " ms]");
         }
-
+        long timeB = System.currentTimeMillis();
 //        insertGameEntityIntoDB(game.getUuid());
-        log.info("End process game: " + game.getUuid());
+        log.info("End process game ["+(timeB - timeA)+" ms]: " + game.getUuid());
     }
 
     private Context initializeContext(Game game){
@@ -95,7 +102,7 @@ public class GameAnalizer {
                 () -> createNewRelation(context)
         );
         moveRelation.increment();
-        stateRepository.save(context.getState());
+        stateRepository.save(context.getState());  // performance is bad
         context.setState(moveRelation.getState());
     }
 

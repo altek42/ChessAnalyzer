@@ -3,6 +3,7 @@ package pl.altek.chessanalizer.module.game;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.altek.chessanalizer.common.ProgressCounter;
 import pl.altek.chessanalizer.module.game.analizer.GameAnalizer;
 import pl.altek.chessanalizer.openapi.client.chesscomapi.api.PlayerApi;
 import pl.altek.chessanalizer.openapi.client.chesscomapi.model.Game;
@@ -26,17 +27,21 @@ public class GameService {
     private GameAnalizer gameAnalizer;
 
     public void updateGameData(UpdateGameAction body){
-        GameList gameList = playerApi.playerGameMonthlyArchive("altek42", "2021", "01");
+        GameList gameList = playerApi.playerGameMonthlyArchive("altek42", "2021", "03");
         List<Game> games = gameList.getGames();
 
-        games.forEach(this::processNewGame);
+        int size = games.size();
+        for (int i = 0; i < size; i++) {
+            Game game = games.get(i);
+            processNewGame(game, ProgressCounter.of(i+1, size));
+        }
     }
 
-    private void processNewGame(Game game) {
+    private void processNewGame(Game game, ProgressCounter progressCounter) {
         UUID gameId = game.getUuid();
         if(gameRepository.existsById(gameId)){
             return;
         }
-        gameAnalizer.processGame(game);
+        gameAnalizer.processGame(game, progressCounter);
     }
 }
