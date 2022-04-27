@@ -47,7 +47,7 @@
                 <version>3.0-j11</version>
                 <configuration>
                     <environments>project.database.posgresql</environments>
-                    <configFile>chessanalizer-main/src/main/resources/application.properties</configFile>
+                    <configFile>../chessanalizer-main/src/main/resources/application.properties</configFile>
                 </configuration>
                 <executions>
                     <execution>

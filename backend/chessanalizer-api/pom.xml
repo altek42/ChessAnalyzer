@@ -39,7 +39,14 @@
             <plugin>
                 <groupId>io.swagger.codegen.v3</groupId>
                 <artifactId>swagger-codegen-maven-plugin</artifactId>
-                <version>3.0.30</version>
+                <version>3.0.33</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.github.jknack</groupId>
+                        <artifactId>handlebars</artifactId>
+                        <version>4.3.0</version>
+                    </dependency>
+                </dependencies>
                 <executions>
                     <execution>
                         <id>mainApi</id>
@@ -49,8 +56,8 @@
                         <configuration>
                             <inputSpec>${project.openapi.dir}/chessAnalyzerApi.yaml</inputSpec>
                             <language>spring</language>
-                            <modelPackage>${project.openapi.package.name}.model</modelPackage>
                             <apiPackage>${project.openapi.package.name}.api</apiPackage>
+                            <modelPackage>${project.openapi.package.name}.model</modelPackage>
                             <generateSupportingFiles>false</generateSupportingFiles>
                             <generateApiTests>false</generateApiTests>
                             <generateModelTests>false</generateModelTests>

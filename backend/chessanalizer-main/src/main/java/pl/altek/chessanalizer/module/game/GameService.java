@@ -27,7 +27,7 @@ public class GameService {
     private GameAnalizer gameAnalizer;
 
     public void updateGameData(UpdateGameAction body){
-        GameList gameList = playerApi.playerGameMonthlyArchive("altek42", "2021", "03");
+        GameList gameList = playerApi.playerGameMonthlyArchive("altek42", body.getYear(), body.getMonth());
         List<Game> games = gameList.getGames();
 
         int size = games.size();
