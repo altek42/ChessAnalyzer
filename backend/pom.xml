@@ -16,6 +16,7 @@
 	<description>CHESS ANALYZER</description>
 
 	<modules>
+        <module>chessanalizer-dozer</module>
 		<module>chessanalizer-api</module>
 		<module>chessanalizer-chessboard-api</module>
 		<module>chessanalizer-chesscom-api</module>
