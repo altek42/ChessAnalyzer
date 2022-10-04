@@ -11,6 +11,7 @@ import pl.altek.chessanalizer.db.entity.GameEntity;
 import pl.altek.chessanalizer.db.node.StateNode;
 import pl.altek.chessanalizer.db.relation.MoveRelation;
 import pl.altek.chessanalizer.db.repository.GameRepository;
+import pl.altek.chessanalizer.db.repository.MoveRelation.MoveRelationRepository;
 import pl.altek.chessanalizer.db.repository.StateRepository;
 import pl.altek.chessanalizer.openapi.client.chessboardapi.api.ChessApi;
 import pl.altek.chessanalizer.openapi.client.chessboardapi.api.SessionApi;
@@ -53,6 +54,9 @@ public class GameAnalizer {
     @Autowired
     private SessionApi sessionApi;
 
+    @Autowired
+    private MoveRelationRepository moveRelationRepository;
+
     @Async("gameAnalizerExecutor")
     @Transactional
     public void processGame(Game game, ProgressCounter progressCounter){
@@ -68,7 +72,8 @@ public class GameAnalizer {
             long timeMoveA = System.currentTimeMillis();
             context.setMove(move);
             moveOnBoard(context);
-            moveToNextState(context);
+            MoveRelation nextMove = addOrIncrementMove(context);
+            context.setState(nextMove.getState());
             context.toggleIsPlayerMove();
             long timeMoveB = System.currentTimeMillis();
             log.info("Move "+(i+1)+"/"+size+" [" + (timeMoveB - timeMoveA) + " ms]");
@@ -96,14 +101,12 @@ public class GameAnalizer {
         return uuid.equals(mockUserId);
     }
 
-    private void moveToNextState(Context context){
-        Optional<MoveRelation> moveRelationOp = findMoveInState(context);
-        MoveRelation moveRelation = moveRelationOp.orElseGet(
+    private MoveRelation addOrIncrementMove(Context context){
+        StateNode state = context.getState();
+        Optional<MoveRelation> relationOp = moveRelationRepository.findAndIncreaseQuantity(state.getHash(), context.getMove(), context.getMoveRelationType());
+        return relationOp.orElseGet(
                 () -> createNewRelation(context)
         );
-        moveRelation.increment();
-        stateRepository.save(context.getState());  // performance is bad
-        context.setState(moveRelation.getState());
     }
 
     private Optional<MoveRelation> findMoveInState(Context context) {

@@ -5,6 +5,7 @@ import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
 import org.springframework.data.neo4j.core.schema.Relationship.Direction;
+import pl.altek.chessanalizer.db.constants.MoveRelationType;
 import pl.altek.chessanalizer.db.relation.MoveRelation;
 
 import java.util.List;
@@ -17,10 +18,10 @@ public class StateNode {
 
     private String fen;
 
-    @Relationship(type="PLAYER_MOVE", direction = Direction.OUTGOING)
+    @Relationship(type = MoveRelationType.Constants.PLAYER_VALUE, direction = Direction.OUTGOING)
     private List<MoveRelation> playerMoves;
 
-    @Relationship(type="ENEMY_MOVE", direction = Direction.OUTGOING)
+    @Relationship(type=MoveRelationType.Constants.ENEMY_VALUE, direction = Direction.OUTGOING)
     private List<MoveRelation> enemyMoves;
 
     public void addPlayerMove(MoveRelation move){

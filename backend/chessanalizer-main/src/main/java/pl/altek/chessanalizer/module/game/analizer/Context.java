@@ -1,6 +1,7 @@
 package pl.altek.chessanalizer.module.game.analizer;
 
 import lombok.Data;
+import pl.altek.chessanalizer.db.constants.MoveRelationType;
 import pl.altek.chessanalizer.db.node.StateNode;
 
 import java.util.function.Supplier;
@@ -30,5 +31,12 @@ class Context {
         }else {
             return isEnemy.get();
         }
+    }
+
+    public MoveRelationType getMoveRelationType(){
+        if(getIsPlayerMove()){
+            return MoveRelationType.PLAYER;
+        }
+        return MoveRelationType.ENEMY;
     }
 }
