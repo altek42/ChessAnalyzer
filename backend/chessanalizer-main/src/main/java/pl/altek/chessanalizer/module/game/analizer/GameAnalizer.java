@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.util.DigestUtils;
-import pl.altek.chessanalizer.common.ProgressCounter;
+import pl.altek.chessanalizer.db.constants.MoveRelationType;
 import pl.altek.chessanalizer.db.entity.GameEntity;
 import pl.altek.chessanalizer.db.node.StateNode;
 import pl.altek.chessanalizer.db.relation.MoveRelation;
@@ -59,9 +59,7 @@ public class GameAnalizer {
 
     @Async("gameAnalizerExecutor")
     @Transactional
-    public void processGame(Game game, ProgressCounter progressCounter){
-        log.info("Start process game ["+progressCounter.getProgress()+"/"+progressCounter.getSize()+"]: " + game.getUuid());
-        long timeA = System.currentTimeMillis();
+    public void processGame(Game game){
         List<String> moves = extractMovesFromPGN(game.getPgn());
 
         Context context = initializeContext(game);
@@ -69,18 +67,15 @@ public class GameAnalizer {
         int size = moves.size();
         for (int i = 0; i < size; i++) {
             String move = moves.get(i);
-            long timeMoveA = System.currentTimeMillis();
             context.setMove(move);
             moveOnBoard(context);
             MoveRelation nextMove = addOrIncrementMove(context);
             context.setState(nextMove.getState());
             context.toggleIsPlayerMove();
-            long timeMoveB = System.currentTimeMillis();
-            log.info("Move "+(i+1)+"/"+size+" [" + (timeMoveB - timeMoveA) + " ms]");
         }
-        long timeB = System.currentTimeMillis();
+
+        closeSession(context);
 //        insertGameEntityIntoDB(game.getUuid());
-        log.info("End process game ["+(timeB - timeA)+" ms]: " + game.getUuid());
     }
 
     private Context initializeContext(Game game){
@@ -93,6 +88,11 @@ public class GameAnalizer {
         context.setState(currentState);
         context.setIsPlayerMove(isPlayerBegin(game));
         return context;
+    }
+
+    private void closeSession(Context context){
+        String sessionId = context.getSession();
+        sessionApi.sessionControllerDeleteSession(sessionId);
     }
 
     private Boolean isPlayerBegin(Game game){
@@ -109,30 +109,20 @@ public class GameAnalizer {
         );
     }
 
-    private Optional<MoveRelation> findMoveInState(Context context) {
-        StateNode state = context.getState();
-        String move = context.getMove();
-        List<MoveRelation> stateMoves = context.execIsPlayerMove(
-                state::getPlayerMoves,
-                state::getEnemyMoves
-        );
-        return stateMoves.stream().filter(x -> x.getName().equals(move)).findFirst();
-    }
-
     private MoveRelation createNewRelation(Context context){
         String nextMoveFen = chessApi.chessControllerGetFen(context.getSession());
         StateNode nextState = findOrCreateStateNode(nextMoveFen);
 
         MoveRelation moveRelation = new MoveRelation();
         moveRelation.setName(context.getMove());
-        moveRelation.setQuantity(0L);
+        moveRelation.setQuantity(1L);
         moveRelation.setState(nextState);
         moveRelation.setUserId(mockDbUserId);
 
         StateNode state = context.getState();
         context.execIsPlayerMove(
-                () -> state.addPlayerMove(moveRelation),
-                () -> state.addEnemyMove(moveRelation)
+                () -> moveRelationRepository.save(state, moveRelation, MoveRelationType.PLAYER),
+                () -> moveRelationRepository.save(state, moveRelation, MoveRelationType.ENEMY)
         );
 
         stateRepository.save(state);

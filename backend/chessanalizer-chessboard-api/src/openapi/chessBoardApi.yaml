@@ -63,7 +63,6 @@ paths:
               schema:
                 type: string
       tags:
-        &a1
         - session
     get:
       operationId: SessionController_sessionInfoAll
@@ -77,7 +76,8 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/SessionDto"
-      tags: *a1
+      tags:
+        - session
   "/session/{sessionId}":
     get:
       operationId: SessionController_sessionInfo
@@ -94,7 +94,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/SessionDto"
-      tags: *a1
+      tags:
+        - session
     delete:
       operationId: SessionController_deleteSession
       parameters:
@@ -106,7 +107,8 @@ paths:
       responses:
         "200":
           description: ""
-      tags: *a1
+      tags:
+        - session
 info:
   title: Board API
   description: The board API description

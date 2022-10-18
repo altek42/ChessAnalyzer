@@ -15,7 +15,6 @@ import pl.altek.chessanalizer.db.relation.MoveRelation;
 
 import java.util.Collection;
 import java.util.Optional;
-import java.util.UUID;
 
 @Repository
 @Slf4j
@@ -28,9 +27,25 @@ class MoveRelationRepositoryImpl implements MoveRelationRepository {
     private ObjectMapper objectMapper;
 
     @Override
+    public void save(StateNode sourceNode, MoveRelation moveRelation, MoveRelationType relationType) {
+        StateNode distNode = moveRelation.getState();
+        client.query("MATCH (s:State) " +
+                        "WITH s " +
+                        "MATCH (d:State) " +
+                        "WHERE s.hash='"+sourceNode.getHash()+"' " +
+                        "AND d.hash='"+distNode.getHash()+"' " +
+                        "CREATE (s)-[r:" + relationType.getValue() +" " +
+                        "{name:'"+ moveRelation.getName() +"', " +
+                        "quantity:"+ moveRelation.getQuantity() +", " +
+                        "userId:'"+moveRelation.getUserId()+"' } " +
+                        "]->(d)")
+                .fetch().one();
+    }
+
+    @Override
     public Optional<MoveRelation> findAndIncreaseQuantity(String sourceNodeHash, String name, MoveRelationType relationType) {
         Collection<MoveRelation> result = client
-                .query(createSql(sourceNodeHash,name, relationType))
+                .query(createSqlFindAndIncreaseQuantity(sourceNodeHash,name, relationType))
                 .fetchAs(MoveRelation.class)
                 .mappedBy(this::mapResult)
                 .all();
@@ -44,7 +59,7 @@ class MoveRelationRepositoryImpl implements MoveRelationRepository {
         return Optional.of(result.iterator().next());
     }
 
-    private String createSql(String sourceNodeHash, String name, MoveRelationType relationType) {
+    private String createSqlFindAndIncreaseQuantity(String sourceNodeHash, String name, MoveRelationType relationType) {
         return "match (n)-[r:" + relationType.getValue() + "]-(n2) " +
                 "where n.hash='" + sourceNodeHash + "' " +
                 "AND r.name='" + name + "' " +

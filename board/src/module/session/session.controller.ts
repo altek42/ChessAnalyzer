@@ -5,11 +5,11 @@ import { SessionService } from './session.service';
 
 const API_NAME = 'session';
 
-@ApiTags(API_NAME)
 @Controller(API_NAME)
 export class SessionController {
   constructor(private readonly sessionService: SessionService) {}
 
+  @ApiTags(API_NAME)
   @ApiResponse({
     status: 201,
     description: 'Create new session',
@@ -19,7 +19,8 @@ export class SessionController {
   createSession(): string {
     return this.sessionService.createSession();
   }
-
+  
+  @ApiTags(API_NAME)
   @ApiResponse({
     status: 200,
     description: 'Show session info',
@@ -30,6 +31,7 @@ export class SessionController {
     return this.sessionService.getSessionDto(sessionId);
   }
 
+  @ApiTags(API_NAME)
   @ApiResponse({
     status: 200,
     description: 'List of sessions',
@@ -41,6 +43,7 @@ export class SessionController {
     return this.sessionService.getAllSessionDto();
   }
 
+  @ApiTags(API_NAME)
   @Delete(':sessionId')
   deleteSession(@Param('sessionId') sessionId: string) {
     this.sessionService.deleteSession(sessionId);

@@ -31,26 +31,22 @@ public class GameService {
     @Autowired
     private StateRepository stateRepository;
 
-    @Autowired
-    @Qualifier("mockedGameList")
-    private GameList gameList;
-
     public void updateGameData(UpdateGameAction body){
-//        GameList gameList = playerApi.playerGameMonthlyArchive("altek42", body.getYear(), body.getMonth());
+        GameList gameList = playerApi.playerGameMonthlyArchive("altek42", body.getYear(), body.getMonth());
         List<Game> games = gameList.getGames();
 
         int size = games.size();
         for (int i = 0; i < size; i++) {
             Game game = games.get(i);
-            processNewGame(game, ProgressCounter.of(i+1, size));
+            processNewGame(game);
         }
     }
 
-    private void processNewGame(Game game, ProgressCounter progressCounter) {
+    private void processNewGame(Game game) {
         UUID gameId = game.getUuid();
         if(gameRepository.existsById(gameId)){
             return;
         }
-        gameAnalizer.processGame(game, progressCounter);
+        gameAnalizer.processGame(game);
     }
 }

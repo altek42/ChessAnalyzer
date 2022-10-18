@@ -8,6 +8,7 @@ import org.springframework.data.neo4j.core.schema.Relationship.Direction;
 import pl.altek.chessanalizer.db.constants.MoveRelationType;
 import pl.altek.chessanalizer.db.relation.MoveRelation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -24,11 +25,5 @@ public class StateNode {
     @Relationship(type=MoveRelationType.Constants.ENEMY_VALUE, direction = Direction.OUTGOING)
     private List<MoveRelation> enemyMoves;
 
-    public void addPlayerMove(MoveRelation move){
-        this.getPlayerMoves().add(move);
-    }
 
-    public void addEnemyMove(MoveRelation move){
-        this.getEnemyMoves().add(move);
-    }
 }

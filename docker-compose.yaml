@@ -1,0 +1,37 @@
+version: "3.9"
+
+networks:
+  chess_network:
+    external: false
+
+services:
+  chess-db-pg:
+    container_name: chess-db-pg
+    image: 'postgres:latest'
+    ports:
+      - 5432:5432
+    networks:
+      - chess_network
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: qwerty123
+      POSTGRES_DB: chessanalizer
+
+  chess-db-neo4j:
+    container_name: chess-db-neo4j
+    image: 'neo4j'
+    ports:
+      - 7474:7474
+      - 7687:7687
+    networks:
+      - chess_network
+    environment:
+      NEO4J_AUTH: neo4j/s3cr3t
+
+  chess-board:
+    container_name: chess-board
+    build: board
+    ports: 
+      - "3000:3000"
+    networks:
+      - chess_network
