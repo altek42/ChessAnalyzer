@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.util.DigestUtils;
+import pl.altek.chessanalizer.common.ProgressCounter;
+import pl.altek.chessanalizer.common.RefSymbol;
 import pl.altek.chessanalizer.db.constants.MoveRelationType;
 import pl.altek.chessanalizer.db.entity.GameEntity;
 import pl.altek.chessanalizer.db.node.StateNode;
@@ -59,7 +61,8 @@ public class GameAnalizer {
 
     @Async("gameAnalizerExecutor")
     @Transactional
-    public void processGame(Game game){
+    public void processGame(Game game, ProgressCounter pc, RefSymbol refSymbol){
+        Long timeStart = System.currentTimeMillis();
         List<String> moves = extractMovesFromPGN(game.getPgn());
 
         Context context = initializeContext(game);
@@ -76,6 +79,8 @@ public class GameAnalizer {
 
         closeSession(context);
 //        insertGameEntityIntoDB(game.getUuid());
+        log.info("End process: " + refSymbol + " " + pc +
+                "; Time elapsed: "+ (System.currentTimeMillis() - timeStart) + " ms" );
     }
 
     private Context initializeContext(Game game){
@@ -124,8 +129,6 @@ public class GameAnalizer {
                 () -> moveRelationRepository.save(state, moveRelation, MoveRelationType.PLAYER),
                 () -> moveRelationRepository.save(state, moveRelation, MoveRelationType.ENEMY)
         );
-
-        stateRepository.save(state);
         return moveRelation;
     }
 
@@ -146,7 +149,7 @@ public class GameAnalizer {
             node.setFen(fen);
             node.setPlayerMoves(new ArrayList<>());
             node.setEnemyMoves(new ArrayList<>());
-            stateRepository.save(node);
+            node = stateRepository.save(node);
             return node;
         });
         return state;

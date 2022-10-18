@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import pl.altek.chessanalizer.common.ProgressCounter;
+import pl.altek.chessanalizer.common.RefSymbol;
 import pl.altek.chessanalizer.db.repository.StateRepository;
 import pl.altek.chessanalizer.module.game.analizer.GameAnalizer;
 import pl.altek.chessanalizer.openapi.client.chesscomapi.api.PlayerApi;
@@ -35,18 +36,22 @@ public class GameService {
         GameList gameList = playerApi.playerGameMonthlyArchive("altek42", body.getYear(), body.getMonth());
         List<Game> games = gameList.getGames();
 
+        RefSymbol refSymbol = RefSymbol.create();
+        log.info("Begin process: " + refSymbol);
+
         int size = games.size();
         for (int i = 0; i < size; i++) {
             Game game = games.get(i);
-            processNewGame(game);
+            processNewGame(game, ProgressCounter.of(i+1, size), refSymbol);
         }
     }
 
-    private void processNewGame(Game game) {
+    private void processNewGame(Game game, ProgressCounter pc, RefSymbol refSymbol) {
         UUID gameId = game.getUuid();
         if(gameRepository.existsById(gameId)){
+            log.info("Omit: " + refSymbol + " " + pc);
             return;
         }
-        gameAnalizer.processGame(game);
+        gameAnalizer.processGame(game, pc, refSymbol);
     }
 }

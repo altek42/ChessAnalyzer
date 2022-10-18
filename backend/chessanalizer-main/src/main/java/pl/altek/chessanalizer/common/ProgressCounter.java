@@ -15,4 +15,9 @@ public class ProgressCounter {
     public static ProgressCounter of(int progress, int size){
         return new ProgressCounter(progress, size);
     }
+
+    @Override
+    public String toString() {
+        return "(" + progress + "/" + size + ")";
+    }
 }
