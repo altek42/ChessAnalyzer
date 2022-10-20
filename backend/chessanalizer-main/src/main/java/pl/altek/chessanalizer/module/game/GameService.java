@@ -2,17 +2,18 @@ package pl.altek.chessanalizer.module.game;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import pl.altek.chessanalizer.common.ProgressCounter;
 import pl.altek.chessanalizer.common.RefSymbol;
+import pl.altek.chessanalizer.db.entity.UserEntity;
+import pl.altek.chessanalizer.db.repository.GameRepository;
 import pl.altek.chessanalizer.db.repository.StateRepository;
 import pl.altek.chessanalizer.module.game.analizer.GameAnalizer;
+import pl.altek.chessanalizer.module.user.UserService;
 import pl.altek.chessanalizer.openapi.client.chesscomapi.api.PlayerApi;
 import pl.altek.chessanalizer.openapi.client.chesscomapi.model.Game;
 import pl.altek.chessanalizer.openapi.client.chesscomapi.model.GameList;
 import pl.altek.chessanalizer.openapi.model.UpdateGameAction;
-import pl.altek.chessanalizer.db.repository.GameRepository;
 
 import java.util.List;
 import java.util.UUID;
@@ -32,8 +33,12 @@ public class GameService {
     @Autowired
     private StateRepository stateRepository;
 
+    @Autowired
+    private UserService userService;
+
     public void updateGameData(UpdateGameAction body){
-        GameList gameList = playerApi.playerGameMonthlyArchive("altek42", body.getYear(), body.getMonth());
+        UserEntity user = userService.getCurrentUser();
+        GameList gameList = playerApi.playerGameMonthlyArchive(user.getUsername(), body.getYear(), body.getMonth());
         List<Game> games = gameList.getGames();
 
         RefSymbol refSymbol = RefSymbol.create();
