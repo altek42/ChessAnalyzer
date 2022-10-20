@@ -22,7 +22,7 @@
 		<module>chessanalizer-chesscom-api</module>
 		<module>chessanalizer-main</module>
         <module>chessanalizer-db</module>
-<!--        <module>chessanalizer-auth</module>-->
+        <module>chessanalizer-auth</module>
     </modules>
 
 	<properties>

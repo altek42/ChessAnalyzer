@@ -6,9 +6,31 @@ info:
     This is API for Chess Analyzer
 
 tags:
+  - name: authorization
+    description: authorization
   - name: game
     description: game
 paths:
+  /api/v1/authorization/signin:
+    post:
+      tags:
+        - authorization
+      summary: User signin
+      description: User signin
+      operationId: signin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SigninAction'
+      responses:
+        '200':
+          description: Token created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserEntry'
+
   /api/v1/game/update:
     post:
       tags:
@@ -28,6 +50,14 @@ paths:
 
 components:
   schemas:
+    SigninAction:
+      type: object
+      properties:
+        login:
+          type: string
+        password:
+          type: string
+
     UpdateGameAction:
       type: object
       properties:
@@ -37,3 +67,15 @@ components:
         year:
           type: string
           pattern: \d{4}
+
+    UserEntry:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        username:
+          type: string
+        chessId:
+          type: string
+          format: uuid

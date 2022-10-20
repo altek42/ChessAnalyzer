@@ -9,6 +9,7 @@ import pl.altek.chessanalizer.db.entity.UserEntity;
 import pl.altek.chessanalizer.db.repository.UserRepository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class AppUserDetailsService implements UserDetailsService {
@@ -19,6 +20,12 @@ public class AppUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<UserEntity> userOp = userRepository.findByUsername(username);
+        UserEntity user = userOp.orElseThrow(() -> new UsernameNotFoundException("Could not find user"));
+        return new AppUserDetails(user);
+    }
+
+    public UserDetails loadUserById(UUID userId) throws UsernameNotFoundException {
+        Optional<UserEntity> userOp = userRepository.findById(userId);
         UserEntity user = userOp.orElseThrow(() -> new UsernameNotFoundException("Could not find user"));
         return new AppUserDetails(user);
     }
