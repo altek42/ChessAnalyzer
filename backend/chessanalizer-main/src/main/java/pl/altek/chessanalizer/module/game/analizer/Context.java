@@ -1,8 +1,8 @@
 package pl.altek.chessanalizer.module.game.analizer;
 
 import lombok.Data;
-import pl.altek.chessanalizer.db.constants.MoveRelationType;
-import pl.altek.chessanalizer.db.node.StateNode;
+import pl.altek.chessanalizer.db.domain.move.MoveRelationType;
+import pl.altek.chessanalizer.db.domain.state.StateNode;
 
 import java.util.function.Supplier;
 

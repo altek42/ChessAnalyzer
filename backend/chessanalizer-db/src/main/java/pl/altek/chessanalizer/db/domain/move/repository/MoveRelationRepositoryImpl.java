@@ -1,4 +1,4 @@
-package pl.altek.chessanalizer.db.repository.MoveRelation;
+package pl.altek.chessanalizer.db.domain.move.repository;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -9,12 +9,11 @@ import org.neo4j.driver.types.TypeSystem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.stereotype.Repository;
-import pl.altek.chessanalizer.db.constants.MoveRelationType;
-import pl.altek.chessanalizer.db.node.StateNode;
-import pl.altek.chessanalizer.db.relation.MoveRelation;
+import pl.altek.chessanalizer.db.domain.move.MoveRelationType;
+import pl.altek.chessanalizer.db.domain.state.StateNode;
+import pl.altek.chessanalizer.db.domain.move.MoveRelation;
 
-import java.util.Collection;
-import java.util.Optional;
+import java.util.*;
 
 @Repository
 @Slf4j
@@ -47,7 +46,7 @@ class MoveRelationRepositoryImpl implements MoveRelationRepository {
         Collection<MoveRelation> result = client
                 .query(createSqlFindAndIncreaseQuantity(sourceNodeHash,name, relationType))
                 .fetchAs(MoveRelation.class)
-                .mappedBy(this::mapResult)
+                .mappedBy(this::mapResultWithDestNode)
                 .all();
         int size = result.size();
         if(size < 1){
@@ -60,14 +59,40 @@ class MoveRelationRepositoryImpl implements MoveRelationRepository {
     }
 
     private String createSqlFindAndIncreaseQuantity(String sourceNodeHash, String name, MoveRelationType relationType) {
-        return "match (n)-[r:" + relationType.getValue() + "]-(n2) " +
+        return "match (n)-[r:" + relationType.getValue() + "]->(n2) " +
                 "where n.hash='" + sourceNodeHash + "' " +
                 "AND r.name='" + name + "' " +
                 "SET r.quantity = r.quantity+1 " +
                 "return r, n2";
     }
 
-    private MoveRelation mapResult(TypeSystem t, Record record) {
+    @Override
+    public List<MoveRelation> findAllByNodeHashAndUserId(String nodeHash, UUID userId) {
+        return findAllByNodeHashAndUserIdAndMoveType(nodeHash, userId, MoveRelationType.PLAYER);
+    }
+
+    @Override
+    public List<MoveRelation> findAllByNodeHashAndNotUserId(String nodeHash, UUID userId) {
+        return findAllByNodeHashAndUserIdAndMoveType(nodeHash, userId, MoveRelationType.ENEMY);
+    }
+
+    private List<MoveRelation> findAllByNodeHashAndUserIdAndMoveType(String nodeHash, UUID userId, MoveRelationType relationType){
+        Collection<MoveRelation> all = client
+                .query(createSqlFindByHashAndUserIdAndRelationType(nodeHash, userId, relationType))
+                .fetchAs(MoveRelation.class)
+                .mappedBy(this::mapResult)
+                .all();
+        return new ArrayList<>(all);
+    }
+
+    private String createSqlFindByHashAndUserIdAndRelationType(String nodeHash, UUID userId, MoveRelationType relationType){
+        return "match (n)-[r:" + relationType.getValue() + "]->(n2) " +
+                "where n.hash='" + nodeHash + "' " +
+                "AND r.userId='" + userId + "' " +
+                "return r";
+    }
+
+    private MoveRelation mapResultWithDestNode(TypeSystem t, Record record) {
         Relationship r = record.get("r").asRelationship();
         Node n = record.get("n2").asNode();
 
@@ -76,6 +101,13 @@ class MoveRelationRepositoryImpl implements MoveRelationRepository {
 
         move.setId(r.id());
         move.setState(stateNode);
+        return move;
+    }
+
+    private MoveRelation mapResult(TypeSystem t, Record record) {
+        Relationship r = record.get("r").asRelationship();
+        MoveRelation move = objectMapper.convertValue(r.asMap(), MoveRelation.class);
+        move.setId(r.id());
         return move;
     }
 }

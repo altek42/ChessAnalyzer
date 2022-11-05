@@ -3,7 +3,7 @@ package pl.altek.chessanalizer.auth;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import pl.altek.chessanalizer.db.entity.UserEntity;
+import pl.altek.chessanalizer.db.domain.user.UserEntity;
 
 import java.util.ArrayList;
 import java.util.Collection;

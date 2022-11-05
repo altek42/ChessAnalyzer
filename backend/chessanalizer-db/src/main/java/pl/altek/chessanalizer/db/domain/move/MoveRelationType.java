@@ -1,4 +1,4 @@
-package pl.altek.chessanalizer.db.constants;
+package pl.altek.chessanalizer.db.domain.move;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

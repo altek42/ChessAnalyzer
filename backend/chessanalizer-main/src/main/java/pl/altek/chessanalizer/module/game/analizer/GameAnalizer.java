@@ -2,19 +2,19 @@ package pl.altek.chessanalizer.module.game.analizer;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.util.DigestUtils;
+import pl.altek.chessanalizer.common.Constants;
 import pl.altek.chessanalizer.common.ProgressCounter;
 import pl.altek.chessanalizer.common.RefSymbol;
-import pl.altek.chessanalizer.db.constants.MoveRelationType;
-import pl.altek.chessanalizer.db.entity.GameEntity;
-import pl.altek.chessanalizer.db.node.StateNode;
-import pl.altek.chessanalizer.db.relation.MoveRelation;
-import pl.altek.chessanalizer.db.repository.GameRepository;
-import pl.altek.chessanalizer.db.repository.MoveRelation.MoveRelationRepository;
-import pl.altek.chessanalizer.db.repository.StateRepository;
+import pl.altek.chessanalizer.db.domain.game.GameEntity;
+import pl.altek.chessanalizer.db.domain.game.GameRepository;
+import pl.altek.chessanalizer.db.domain.move.MoveRelation;
+import pl.altek.chessanalizer.db.domain.move.MoveRelationType;
+import pl.altek.chessanalizer.db.domain.move.repository.MoveRelationRepository;
+import pl.altek.chessanalizer.db.domain.state.StateNode;
+import pl.altek.chessanalizer.db.domain.state.StateRepository;
+import pl.altek.chessanalizer.module.user.UserService;
 import pl.altek.chessanalizer.openapi.client.chessboardapi.api.ChessApi;
 import pl.altek.chessanalizer.openapi.client.chessboardapi.api.SessionApi;
 import pl.altek.chessanalizer.openapi.client.chessboardapi.model.MoveDto;
@@ -37,12 +37,7 @@ public class GameAnalizer {
     private final Pattern PGN_MOVE_REGEX = Pattern.compile("\\. (.*?)? \\{");
 
     @Autowired
-    @Qualifier("mockDbUserId")
-    private UUID mockDbUserId;
-
-    @Autowired
-    @Qualifier("mockUserId")
-    private UUID mockUserId;
+    private UserService userService;
 
     @Autowired
     private GameRepository gameRepository;
@@ -59,7 +54,7 @@ public class GameAnalizer {
     @Autowired
     private MoveRelationRepository moveRelationRepository;
 
-    @Async("gameAnalizerExecutor")
+//    @Async("gameAnalizerExecutor")
     @Transactional
     public void processGame(Game game, ProgressCounter pc, RefSymbol refSymbol){
         Long timeStart = System.currentTimeMillis();
@@ -85,8 +80,7 @@ public class GameAnalizer {
 
     private Context initializeContext(Game game){
         String session = sessionApi.sessionControllerCreateSession();
-        String initalBoradFen = chessApi.chessControllerGetFen(session);
-        StateNode currentState = findOrCreateStateNode(initalBoradFen);
+        StateNode currentState = findOrCreateStateNode(Constants.INITIAL_FEN);
 
         Context context = new Context();
         context.setSession(session);
@@ -103,7 +97,7 @@ public class GameAnalizer {
     private Boolean isPlayerBegin(Game game){
         GamePlayer player = game.getWhite();
         UUID uuid = player.getUuid();
-        return uuid.equals(mockUserId);
+        return uuid.equals(userService.getCurrentUserChessId());
     }
 
     private MoveRelation addOrIncrementMove(Context context){
@@ -122,7 +116,7 @@ public class GameAnalizer {
         moveRelation.setName(context.getMove());
         moveRelation.setQuantity(1L);
         moveRelation.setState(nextState);
-        moveRelation.setUserId(mockDbUserId);
+        moveRelation.setUserId(userService.getCurrentUserId());
 
         StateNode state = context.getState();
         context.execIsPlayerMove(
@@ -158,7 +152,7 @@ public class GameAnalizer {
     private void insertGameEntityIntoDB(UUID gameId){
         GameEntity gameEntity = new GameEntity();
         gameEntity.setId(gameId);
-        gameEntity.setUserId(mockDbUserId);
+        gameEntity.setUserId(userService.getCurrentUserId());
         gameRepository.save(gameEntity);
     }
 

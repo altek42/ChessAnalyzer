@@ -5,8 +5,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import pl.altek.chessanalizer.db.entity.UserEntity;
-import pl.altek.chessanalizer.db.repository.UserRepository;
+import pl.altek.chessanalizer.db.domain.user.UserEntity;
+import pl.altek.chessanalizer.db.domain.user.UserRepository;
 
 import java.util.Optional;
 import java.util.UUID;
