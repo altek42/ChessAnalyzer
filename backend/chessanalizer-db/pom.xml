@@ -49,35 +49,4 @@
             <version>2.7.4</version>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.javalite</groupId>
-                <artifactId>db-migrator-maven-plugin</artifactId>
-                <version>3.0-j11</version>
-                <configuration>
-                    <environments>project.database.posgresql</environments>
-                    <configFile>../chessanalizer-main/src/main/resources/application.properties</configFile>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>migrations</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>migrate</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.postgresql</groupId>
-                        <artifactId>postgresql</artifactId>
-                        <version>42.3.1</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
-        </plugins>
-    </build>
-
 </project>

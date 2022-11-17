@@ -27,6 +27,11 @@ services:
       - chess_network
     environment:
       NEO4J_AUTH: neo4j/s3cr3t
+    volumes:
+      - ./_docker/neo4j/data:/data
+      - ./_docker/neo4j/logs:/logs
+      - ./_docker/neo4j/import:/var/lib/neo4j/import
+      - ./_docker/neo4j/plugins:/plugins
 
   chess-board:
     container_name: chess-board

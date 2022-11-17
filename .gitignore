@@ -1,1 +1,3 @@
 .idea
+_docker/**
+backend/flyway/bin/**
