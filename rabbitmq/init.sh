@@ -1,11 +1,14 @@
 #!/bin/bash
 
-rabbitmqadmin --bash-completion
+if [[ ! -f setup.lock ]]; then
+  rabbitmqadmin --bash-completion
+fi
 
 USER_NAME=rabbitmq
 USER_PASS=qwerty123
 
 function setup() {
+
   declare -A users
   users["chessanalizer"]=qwerty123
   for key in ${!users[@]}; do
@@ -19,9 +22,13 @@ function setup() {
   do
     rabbitmqadmin -u $USER_NAME -p $USER_PASS declare queue name=$name durable=true
   done
+
+  echo "" > setup.lock
 }
 
-( rabbitmqctl wait --timeout 60 $RABBITMQ_PID_FILE ; \
-setup ) &
+if [[ ! -f setup.lock ]]; then
+  ( rabbitmqctl wait --timeout 60 $RABBITMQ_PID_FILE ; \
+  setup ) &
+fi
 
 rabbitmq-server $@
