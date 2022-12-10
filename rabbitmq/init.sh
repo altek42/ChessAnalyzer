@@ -17,12 +17,6 @@ function setup() {
     rabbitmqctl set_permissions -p / ${key} ".*" ".*" ".*"
   done
 
-  queue_names=( update-chess )
-  for name in "${queue_names[@]}"
-  do
-    rabbitmqadmin -u $USER_NAME -p $USER_PASS declare queue name=$name durable=true
-  done
-
   echo "" > setup.lock
 }
 

@@ -31,6 +31,8 @@
 		<project.openapi.package.name>${project.base.package.name}.openapi</project.openapi.package.name>
 		<project.openapi.client.package.name>${project.openapi.package.name}.client</project.openapi.client.package.name>
 		<project.openapi.dir>${project.basedir}/src/openapi</project.openapi.dir>
+
+		<spring.version>2.6.3</spring.version>
 	</properties>
 
 </project>

@@ -1,17 +1,19 @@
-package pl.altek.chessanalizer.module.game.analizer;
+package pl.altek.chessanalizer.module.gameAnalyzer.model;
 
 import lombok.Data;
 import pl.altek.chessanalizer.db.domain.move.MoveRelationType;
 import pl.altek.chessanalizer.db.domain.state.StateNode;
 
+import java.util.UUID;
 import java.util.function.Supplier;
 
 @Data
-class Context {
+public class GameContext {
     StateNode state;
     String session;
     String move;
     Boolean isPlayerMove;
+    UUID userId;
 
     public void toggleIsPlayerMove(){
         this.setIsPlayerMove(!this.getIsPlayerMove());

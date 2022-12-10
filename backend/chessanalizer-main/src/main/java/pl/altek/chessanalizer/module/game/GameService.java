@@ -1,6 +1,7 @@
 package pl.altek.chessanalizer.module.game;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.altek.chessanalizer.common.ProgressCounter;
@@ -8,7 +9,7 @@ import pl.altek.chessanalizer.common.RefSymbol;
 import pl.altek.chessanalizer.db.domain.user.UserEntity;
 import pl.altek.chessanalizer.db.domain.game.GameRepository;
 import pl.altek.chessanalizer.db.domain.state.StateRepository;
-import pl.altek.chessanalizer.module.game.analizer.GameAnalizer;
+import pl.altek.chessanalizer.module.gameAnalyzer.GameAnalyzerService;
 import pl.altek.chessanalizer.module.user.UserService;
 import pl.altek.chessanalizer.openapi.client.chesscomapi.api.PlayerApi;
 import pl.altek.chessanalizer.openapi.client.chesscomapi.model.Game;
@@ -23,16 +24,10 @@ import java.util.UUID;
 public class GameService {
     @Autowired
     private PlayerApi playerApi;
-
     @Autowired
     private GameRepository gameRepository;
-
     @Autowired
-    private GameAnalizer gameAnalizer;
-
-    @Autowired
-    private StateRepository stateRepository;
-
+    private GameAnalyzerService gameAnalyzerService;
     @Autowired
     private UserService userService;
 
@@ -57,6 +52,13 @@ public class GameService {
             log.info("Omit: " + refSymbol + " " + pc);
             return;
         }
-        gameAnalizer.processGame(game, pc, refSymbol);
+        UUID whitePlayerId = game.getWhite().getUuid();
+        UUID currentUserChessId = userService.getCurrentUserChessId();
+
+        gameAnalyzerService.queuePgn(
+                game.getPgn(),
+                userService.getCurrentUserId(),
+                currentUserChessId.equals(whitePlayerId)
+        );
     }
 }
