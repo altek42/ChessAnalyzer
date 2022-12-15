@@ -26,7 +26,7 @@ public class MoveRelation {
 
     private UUID userId;
 
-    public void increment(){
-        this.quantity += 1L;
-    }
+    private Long win;
+    private Long draw;
+    private Long lose;
 }

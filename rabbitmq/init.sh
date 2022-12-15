@@ -4,9 +4,6 @@ if [[ ! -f setup.lock ]]; then
   rabbitmqadmin --bash-completion
 fi
 
-USER_NAME=rabbitmq
-USER_PASS=qwerty123
-
 function setup() {
 
   declare -A users
