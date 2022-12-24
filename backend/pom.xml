@@ -23,6 +23,7 @@
 		<module>chessanalizer-main</module>
         <module>chessanalizer-db</module>
         <module>chessanalizer-auth</module>
+        <module>chessanalizer-db-neo4j</module>
     </modules>
 
 	<properties>

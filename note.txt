@@ -1,0 +1,8 @@
+CREATE CONSTRAINT constraint_state_hash_unique IF NOT EXISTS
+FOR (n:STATE) REQUIRE n.hash IS UNIQUE
+
+MATCH (n) - [r] -> (d) - [r2] -> (d2)
+where n.hash = '0056992a41fe7b3940d5cb4202ef682d'
+RETURN n,r,d,r2,d2
+
+CREATE (n:STATE {fen:'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', hash: '0056992a41fe7b3940d5cb4202ef682d'})

@@ -3,8 +3,6 @@ package pl.altek.chessanalizer.module.game;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.altek.chessanalizer.common.ProgressCounter;
-import pl.altek.chessanalizer.common.RefSymbol;
 import pl.altek.chessanalizer.db.domain.game.GameRepository;
 import pl.altek.chessanalizer.db.domain.move.GameResult;
 import pl.altek.chessanalizer.db.domain.user.UserEntity;
@@ -35,20 +33,17 @@ public class GameService {
         GameList gameList = playerApi.playerGameMonthlyArchive(user.getUsername(), body.getYear(), body.getMonth());
         List<Game> games = gameList.getGames();
 
-        RefSymbol refSymbol = RefSymbol.create();
-        log.info("Begin process: " + refSymbol);
 
         int size = games.size();
         for (int i = 0; i < size; i++) {
             Game game = games.get(i);
-            processNewGame(game, ProgressCounter.of(i + 1, size), refSymbol);
+            processNewGame(game);
         }
     }
 
-    private void processNewGame(Game game, ProgressCounter pc, RefSymbol refSymbol) {
+    private void processNewGame(Game game) {
         UUID gameId = game.getUuid();
         if (gameRepository.existsById(gameId)) {
-            log.info("Omit: " + refSymbol + " " + pc);
             return;
         }
         UUID whitePlayerId = game.getWhite().getUuid();
