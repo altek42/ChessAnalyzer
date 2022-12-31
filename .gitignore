@@ -1,3 +1,5 @@
 .idea
 _docker/**
 backend/flyway/bin/**
+backend/neo4j/neo4j-migrations
+backend/neo4j/.migrations.properties

@@ -19,7 +19,7 @@ services:
 
   chess-db-neo4j:
     container_name: chess-db-neo4j
-    build: neo4j
+    image: 'neo4j:latest'
     ports:
       - 7474:7474
       - 7687:7687
@@ -27,9 +27,6 @@ services:
       - chess_network
     environment:
       NEO4J_AUTH: neo4j/qwerty123
-      NEO4JLABS_PLUGINS: '["apoc"]'
-      NEO4J_dbms_security_procedures_unrestricted: apoc.*
-      NEO4J_dbms_security_procedures_whitelist: apoc.*
     volumes:
       - ./_docker/neo4j/data:/data
       - ./_docker/neo4j/logs:/logs
