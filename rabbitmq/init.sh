@@ -7,7 +7,7 @@ fi
 function setup() {
 
   declare -A users
-  users["chessanalizer"]=qwerty123
+  users["analyzer"]=qwerty123
   for key in ${!users[@]}; do
     rabbitmqctl add_user ${key} ${users[${key}]}
     rabbitmqctl set_user_tags ${key} application
