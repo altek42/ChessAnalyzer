@@ -1,0 +1,14 @@
+{
+  "avatar": "https://images.chesscomfiles.com/uploads/v1/user/96952226.7fd5835d.200x200o.b96c1465effb.png",
+  "player_id": 96952226,
+  "@id": "https://api.chess.com/pub/player/altek42",
+  "url": "https://www.chess.com/member/Altek42",
+  "name": "Przemek G",
+  "username": "altek42",
+  "followers": 3,
+  "country": "https://api.chess.com/pub/country/PL",
+  "last_online": 1617222412,
+  "joined": 1605433323,
+  "status": "basic",
+  "is_streamer": false
+}

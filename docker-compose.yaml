@@ -50,7 +50,7 @@ services:
 
   chess-board:
     container_name: chess-board
-    build: board
+    build: src/board
     ports: 
       - "3000:3000"
     networks:
