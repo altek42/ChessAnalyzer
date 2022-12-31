@@ -2,7 +2,6 @@ package pl.altek.analyzer.module.gameAnalyzer.model;
 
 import lombok.Data;
 import lombok.ToString;
-import pl.altek.analyzer.db.domain.move.GameResult;
 
 import java.util.UUID;
 

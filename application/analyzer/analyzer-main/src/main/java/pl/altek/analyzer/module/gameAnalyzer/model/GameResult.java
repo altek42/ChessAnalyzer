@@ -1,4 +1,4 @@
-package pl.altek.analyzer.db.domain.move;
+package pl.altek.analyzer.module.gameAnalyzer.model;
 
 import java.util.ArrayList;
 import java.util.List;

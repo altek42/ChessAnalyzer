@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 import pl.altek.analyzer.common.Constants;
-import pl.altek.analyzer.db.domain.move.MoveRelation;
-import pl.altek.analyzer.db.domain.move.repository.MoveRelationRepository;
+import pl.altek.analyzer.db.neo4j.model.Move;
+import pl.altek.analyzer.db.neo4j.repository.MoveRepository;
 import pl.altek.analyzer.module.user.UserService;
 import pl.altek.analyzer.openapi.model.AnalysisAction;
 import pl.altek.analyzer.openapi.model.AnalysisMoveEntry;
@@ -23,11 +23,11 @@ public class AnalysisService {
     private UserService userService;
 
     @Autowired
-    private MoveRelationRepository moveRelationRepository;
+    private MoveRepository moveRepository;
 
     public AnalysisResponse analysis(AnalysisAction body) {
         String hash = getHash(body.getFen());
-        List<MoveRelation> moves = findMoves(hash, body.isIsPlayer());
+        List<Move> moves = findMoves(hash, body.isIsPlayer());
         List<AnalysisMoveEntry> analysisMoveEntryList = mapMoveToAnalysisMoveEntry(moves);
         Long countMoves = countMoves(moves);
 
@@ -37,12 +37,12 @@ public class AnalysisService {
         return response;
     }
 
-    private List<MoveRelation> findMoves(String hash, Boolean isPlayer) {
+    private List<Move> findMoves(String hash, Boolean isPlayer) {
         UUID currentUserId = userService.getCurrentUserId();
         if (isPlayer) {
-            return moveRelationRepository.findAllByNodeHashAndUserId(hash, currentUserId);
+            return moveRepository.findAllPlayerMoveByNodeAndUserId(hash, currentUserId);
         } else {
-            return moveRelationRepository.findAllByNodeHashAndNotUserId(hash, currentUserId);
+            return moveRepository.findAllEnemyMoveByNodeAndUserId(hash, currentUserId);
         }
     }
 
@@ -53,15 +53,15 @@ public class AnalysisService {
         return DigestUtils.md5DigestAsHex(fen.getBytes(StandardCharsets.UTF_8));
     }
 
-    private Long countMoves(List<MoveRelation> moveRelationList) {
+    private Long countMoves(List<Move> moveRelationList) {
         Long sum = 0L;
-        for (MoveRelation moveRelation : moveRelationList) {
+        for (Move moveRelation : moveRelationList) {
             sum += moveRelation.getQuantity();
         }
         return sum;
     }
 
-    private List<AnalysisMoveEntry> mapMoveToAnalysisMoveEntry(List<MoveRelation> moveRelationList) {
+    private List<AnalysisMoveEntry> mapMoveToAnalysisMoveEntry(List<Move> moveRelationList) {
         return moveRelationList.stream().map(x -> {
             AnalysisMoveEntry entry = new AnalysisMoveEntry();
             entry.setName(x.getName());

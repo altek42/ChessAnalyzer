@@ -1,7 +1,6 @@
 package pl.altek.analyzer.module.gameAnalyzer.model;
 
 import lombok.Data;
-import pl.altek.analyzer.db.domain.move.GameResult;
 import pl.altek.analyzer.db.neo4j.model.State;
 
 import java.util.UUID;
