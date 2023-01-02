@@ -3,6 +3,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { ChessModule } from '../chess/chess.module';
 import { SessionModule } from '../session/session.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { SessionModule } from '../session/session.module';
     }),
     ChessModule,
     SessionModule,
+    ScheduleModule.forRoot(),
   ],
 })
 export class AppModule {}

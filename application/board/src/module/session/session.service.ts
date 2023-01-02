@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { Cron } from '@nestjs/schedule';
 import { ChessInstance } from 'chess.js';
 import { SessionDto } from 'src/model/session/session.dto';
 import { SessionModel } from 'src/model/session/session.model';
@@ -33,5 +34,18 @@ export class SessionService {
 
   deleteSession(sessionId: string) {
     delete this.sessions[sessionId];
+  }
+
+  @Cron('0 0 */1 * * *')
+  clearSession() {
+    let deadline = new Date()
+    deadline.setHours(deadline.getHours() - 12)
+    for(let sessionId in this.sessions){
+      let session:ISessionModel = this.sessions[sessionId];
+      let createDate:Date = session.getCreateDate();
+      if(createDate.getTime() < deadline.getTime()){
+        this.deleteSession(sessionId);
+      }
+    }
   }
 }
