@@ -3,6 +3,7 @@ package pl.altek.analyzer.module.game;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.altek.analyzer.db.domain.game.GameEntity;
 import pl.altek.analyzer.db.domain.game.GameRepository;
 import pl.altek.analyzer.db.domain.user.UserEntity;
 import pl.altek.analyzer.module.gameAnalyzer.GameAnalyzerService;
@@ -46,6 +47,8 @@ public class GameService {
         if (gameRepository.existsById(gameId)) {
             return;
         }
+        saveGame(gameId);
+
         UUID whitePlayerId = game.getWhite().getUuid();
         UUID currentUserChessId = userService.getCurrentUserChessId();
 
@@ -58,5 +61,12 @@ public class GameService {
                 isPlayerWhite,
                 GameResult.fromChessComGameResult(chessComResult)
         );
+    }
+
+    private void saveGame(UUID gameId) {
+        GameEntity gameEntity = new GameEntity();
+        gameEntity.setId(gameId);
+        gameEntity.setUserId(userService.getCurrentUserId());
+        gameRepository.saveAndFlush(gameEntity);
     }
 }
