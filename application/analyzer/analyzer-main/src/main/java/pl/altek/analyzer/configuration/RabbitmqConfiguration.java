@@ -20,7 +20,7 @@ public class RabbitmqConfiguration {
     @PostConstruct
     public void createQueues() {
         for (RabbitQueue queue : RabbitQueue.values()) {
-            amqpAdmin.declareQueue(new Queue(queue.name(), true));
+            amqpAdmin.declareQueue(new Queue(queue.name(), true, queue.getExclusive(), false));
         }
     }
 

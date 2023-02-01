@@ -1,6 +1,6 @@
 {
   "uuid": "2778167d-da31-47e3-b83a-8f6ba9bcadcd",
-  "lastMigration": 24,
+  "lastMigration": 25,
   "name": "ChessApi",
   "endpointPrefix": "pub",
   "latency": 0,
@@ -174,5 +174,12 @@
       "value": ""
     }
   ],
-  "data": []
+  "data": [],
+  "folders": [],
+  "rootChildren": [
+    {
+      "type": "route",
+      "uuid": "6d8806e8-8243-44bd-9343-71b8f063247a"
+    }
+  ]
 }

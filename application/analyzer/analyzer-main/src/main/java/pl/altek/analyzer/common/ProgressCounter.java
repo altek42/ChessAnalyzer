@@ -1,16 +1,6 @@
 package pl.altek.analyzer.common;
 
-import lombok.Getter;
-
-@Getter
-public class ProgressCounter {
-    private final int size;
-    private final int progress;
-
-    public ProgressCounter(int progress, int size) {
-        this.progress = progress;
-        this.size = size;
-    }
+public record ProgressCounter(int progress, int size) {
 
     public static ProgressCounter of(int progress, int size) {
         return new ProgressCounter(progress, size);
