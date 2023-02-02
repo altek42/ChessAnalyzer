@@ -16,9 +16,7 @@ public class ChessBoardApiConfig {
 
     @Bean
     ApiClient chessBoardApiClient(@Autowired RestTemplate restTemplate) {
-        ApiClient apiClient = new ApiClient(restTemplate);
-        apiClient.setBasePath(apiUrl);
-        return apiClient;
+        return new ApiClient(restTemplate);
     }
 
     @Bean
