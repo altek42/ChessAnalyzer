@@ -1,6 +1,6 @@
 {
   "uuid": "2778167d-da31-47e3-b83a-8f6ba9bcadcd",
-  "lastMigration": 25,
+  "lastMigration": 32,
   "name": "ChessApi",
   "endpointPrefix": "pub",
   "latency": 0,
@@ -36,7 +36,9 @@
           "fallbackTo404": false,
           "default": true,
           "databucketID": "",
-          "bodyType": "INLINE"
+          "bodyType": "INLINE",
+          "crudKey": "id",
+          "callbacks": []
         },
         {
           "uuid": "87b6ac60-6b3a-4021-bd6c-139f36893487",
@@ -61,7 +63,9 @@
           "fallbackTo404": false,
           "default": false,
           "databucketID": "",
-          "bodyType": "INLINE"
+          "bodyType": "INLINE",
+          "crudKey": "id",
+          "callbacks": []
         },
         {
           "uuid": "e4018696-e0bb-4d71-bcdc-5f47c7582c9a",
@@ -86,7 +90,9 @@
           "fallbackTo404": false,
           "default": false,
           "databucketID": "",
-          "bodyType": "INLINE"
+          "bodyType": "INLINE",
+          "crudKey": "id",
+          "callbacks": []
         },
         {
           "uuid": "a6832036-9677-46f6-95f0-2663c80079a8",
@@ -111,7 +117,9 @@
           "fallbackTo404": false,
           "default": false,
           "databucketID": "",
-          "bodyType": "INLINE"
+          "bodyType": "INLINE",
+          "crudKey": "id",
+          "callbacks": []
         },
         {
           "uuid": "60e92c69-7569-4075-bd0e-13cb63444cbd",
@@ -136,11 +144,13 @@
           "fallbackTo404": false,
           "default": false,
           "databucketID": "",
-          "bodyType": "INLINE"
+          "bodyType": "INLINE",
+          "crudKey": "id",
+          "callbacks": []
         }
       ],
-      "enabled": true,
-      "responseMode": null
+      "responseMode": null,
+      "type": "http"
     }
   ],
   "proxyMode": false,
@@ -181,5 +191,6 @@
       "type": "route",
       "uuid": "6d8806e8-8243-44bd-9343-71b8f063247a"
     }
-  ]
+  ],
+  "callbacks": []
 }

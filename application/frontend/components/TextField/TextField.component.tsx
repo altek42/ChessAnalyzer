@@ -1,8 +1,10 @@
+import TextFieldMui, { TextFieldProps } from '@mui/material/TextField'
 import React from 'react'
-import TextField, { TextFieldProps } from '@mui/material/TextField';
 
-export default (props: TextFieldProps = {
-    variant: 'outlined'
-}) => (
-    <TextField {...props} />
-)
+const TextField = (
+  props: TextFieldProps = {
+    variant: 'outlined',
+  }
+) => <TextFieldMui {...props} />
+
+export default TextField

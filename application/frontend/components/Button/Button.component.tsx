@@ -1,7 +1,6 @@
+import MuiButton, { ButtonProps } from '@mui/material/Button'
 import React from 'react'
-import MuiButton, { ButtonProps } from '@mui/material/Button';
 
-export default (props: ButtonProps = {
-}) => (
-    <MuiButton {...props} />
-)
+const Button = (props: ButtonProps = {}) => <MuiButton {...props} />
+
+export default Button

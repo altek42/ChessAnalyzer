@@ -1,26 +1,25 @@
-import type { Meta, StoryObj } from "@storybook/react";
-
-import Button from "@/components/Button";
+import type { Meta, StoryObj } from '@storybook/react'
+import Button from '@/components/Button'
 
 const meta = {
-  title: "Components/Button",
+  title: 'Components/Button',
   component: Button,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
   },
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {
-    variant: { control: "select", options: ['text', 'contained', 'outlined'] },
-    color: { control: "select", options: ['primary', 'secondary'] }
+    variant: { control: 'select', options: ['text', 'contained', 'outlined'] },
+    color: { control: 'select', options: ['primary', 'secondary'] },
   },
-} satisfies Meta<typeof Button>;
+} satisfies Meta<typeof Button>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   args: {
     children: 'Button',
     variant: 'contained',
   },
-};
+}
