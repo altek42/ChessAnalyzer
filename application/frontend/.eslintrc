@@ -1,33 +1,65 @@
 {
-  "root": true,
+  "extends": [
+    "next/core-web-vitals",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended"
+  ],
   "parser": "@typescript-eslint/parser",
   "plugins": [
     "@typescript-eslint",
     "prettier",
     "import"
   ],
-  "extends": [
-    "next/core-web-vitals",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:prettier/recommended"
-  ],
+  "root": true,
   "rules": {
-    "import/order": ["error", {"groups": [["builtin", "external", "internal"]], "newlines-between": "always"}],
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_"
+      }
+    ],
+    "import/order": [
+      "error",
+      {
+        "groups": [
+          [
+            "builtin",
+            "external",
+            "internal"
+          ]
+        ],
+        "newlines-between": "always"
+      }
+    ],
+    "jsx-quotes": [
+      "error",
+      "prefer-single"
+    ],
+    "prettier/prettier": [
+      "error",
+      {
+        "jsxSingleQuote": true,
+        "printWidth": 80,
+        "semi": false,
+        "singleQuote": true,
+        "sort-imports": true,
+        "tabWidth": 2,
+        "trailingComma": "es5"
+      }
+    ],
+    "quotes": [
+      "error",
+      "single",
+      {
+        "allowTemplateLiterals": true,
+        "avoidEscape": true
+      }
+    ],
     "semi": [
       "error",
       "never"
-    ],
-    "quotes": ["error", "single", { "avoidEscape": true, "allowTemplateLiterals": true }],
-    "jsx-quotes": ["error", "prefer-single"],
-    "prettier/prettier": ["error", {
-      "jsxSingleQuote": true,
-      "printWidth": 80,
-      "semi": false,
-      "singleQuote": true,
-      "sort-imports": true,
-      "tabWidth": 2,
-      "trailingComma": "es5"
-    }]
+    ]
   },
   "settings": {
     "import/resolver": {

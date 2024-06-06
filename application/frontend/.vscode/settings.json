@@ -12,4 +12,5 @@
   ],
   "prettier.requireConfig": true,
   "files.eol": "\n",
+  "git.openRepositoryInParentFolders": "always"
 }
