@@ -23,6 +23,13 @@ const theme = createTheme({
         },
       },
     },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          borderRadius: 10,
+        },
+      },
+    },
   },
   typography: {
     fontFamily: roboto.style.fontFamily,

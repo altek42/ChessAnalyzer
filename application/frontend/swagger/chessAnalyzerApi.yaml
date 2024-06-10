@@ -1,0 +1,134 @@
+openapi: 3.0.2
+info:
+  title: CHESS ANALYZER
+  version: 1.0.0
+  description: |-
+    This is API for Chess Analyzer
+
+tags:
+  - name: authorization
+    description: authorization
+  - name: game
+    description: game
+paths:
+  /api/v1/authorization/signin:
+    post:
+      tags:
+        - authorization
+      summary: User signin
+      description: User signin
+      operationId: signin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SigninAction'
+      responses:
+        '200':
+          description: Token created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserEntry'
+
+  /api/v1/game/update:
+    post:
+      tags:
+        - game
+      summary: Update game data
+      description: Update game data
+      operationId: updateGameData
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateGameAction'
+      responses:
+        '200':
+          description: Successful operation
+
+  /api/v1/analysis:
+    post:
+      tags:
+        - analysis
+      summary: Game analysis
+      operationId: analysis
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnalysisAction'
+      responses:
+        '200':
+          description: Analysis completed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnalysisResponse"
+
+
+components:
+  schemas:
+    SigninAction:
+      type: object
+      properties:
+        login:
+          type: string
+        password:
+          type: string
+
+    UpdateGameAction:
+      type: object
+      properties:
+        month:
+          type: string
+          pattern: (0[1-9]|1[012])
+        year:
+          type: string
+          pattern: \d{4}
+    
+    AnalysisAction:
+      type: object
+      properties:
+        fen:
+          type: string
+        isPlayer:
+          type: boolean
+
+    UserEntry:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        username:
+          type: string
+        chessId:
+          type: string
+          format: uuid
+
+    AnalysisMoveEntry:
+      type: object
+      properties:
+        name:
+          type: string
+        win:
+          type: integer
+          format: int32
+        lose:
+          type: integer
+          format: int32
+        draw:
+          type: integer
+          format: int32
+    
+    AnalysisResponse:
+      type: object
+      properties:
+        totalGames:
+          type: integer
+          format: int64
+        moveList:
+          type: array
+          items:
+            $ref: "#/components/schemas/AnalysisMoveEntry"

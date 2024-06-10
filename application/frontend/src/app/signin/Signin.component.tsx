@@ -1,18 +1,21 @@
 'use client'
+
 import { useFormState } from 'react-dom'
 import { Button, Paper, Stack, TextField, Typography } from '@mui/material'
 import React from 'react'
 
-import { FormState, onFormPostAction } from './Signin.action'
+import { onFormPostAction } from './signin.action'
+import { SigninFormType } from './signin.types'
 
-const initialState = {
-  message: '',
+const initialFormState: SigninFormType = {
+  loginError: false,
+  passwordError: false,
 }
 
 const Signin = () => {
-  const [_state, formAction] = useFormState<FormState, FormData>(
+  const [state, formAction] = useFormState<SigninFormType, FormData>(
     onFormPostAction,
-    initialState
+    initialFormState
   )
 
   return (
@@ -24,6 +27,7 @@ const Signin = () => {
       })}
       component={'form'}
       action={formAction}
+      noValidate
     >
       <Stack spacing={2}>
         <Typography
@@ -35,8 +39,19 @@ const Signin = () => {
         >
           Signin:
         </Typography>
-        <TextField label='Login:' name='login' />
-        <TextField label='Password:' name='password' type='password' />
+        <TextField
+          required
+          label='Login'
+          name='login'
+          error={state.loginError}
+        />
+        <TextField
+          required
+          label='Password'
+          name='password'
+          type='password'
+          error={state.passwordError}
+        />
         <Button type='submit' variant='contained'>
           Signin
         </Button>
