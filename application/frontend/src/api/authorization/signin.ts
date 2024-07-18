@@ -1,30 +1,19 @@
 import { cookies } from 'next/headers'
 
+import appFetch, { HttpMethod } from '../appFetch'
+
 const signin = async (login: string, password: string) => {
-  const response = await fetch(
-    'http://127.0.0.1:7002/api/v1/authorization/signin',
-    {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json;charset=UTF-8',
-      },
-      body: JSON.stringify({
-        login,
-        password,
-      }),
-    }
-  )
+  const { headers } = await appFetch('/authorization/signin', HttpMethod.POST, {
+    login,
+    password,
+  })
 
-  if (response.status !== 200) {
-    return // error
-  }
+  const token = headers.get('Authorization') || ''
 
-  const token = response.headers.get('Authorization') || ''
-
-  cookies().set('token', token)
-
-  const data = await response.json()
-  console.log(data, token)
+  cookies().set('token', token, {
+    httpOnly: true,
+    secure: true,
+  })
 }
 
 export default signin

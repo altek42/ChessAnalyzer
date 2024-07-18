@@ -2,7 +2,10 @@ import type { Metadata } from 'next'
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter'
 import { CssBaseline, ThemeProvider } from '@mui/material'
 
+import { extendFormData } from '../extensions/lib/formDataExtensions'
 import theme from './theme'
+
+extendFormData()
 
 export const metadata: Metadata = {
   title: 'Create Next App',

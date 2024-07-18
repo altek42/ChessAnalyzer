@@ -2,6 +2,7 @@
 
 import { z } from 'zod'
 import signin from '@/api/authorization/signin'
+import { redirect } from 'next/navigation'
 
 import { SigninFormType } from './signin.types'
 
@@ -22,7 +23,7 @@ export const onFormPostAction = async (
     return errorData
   }
 
-  signin(formData.get('login') as string, formData.get('password') as string)
+  await signin(formData.getString('login'), formData.getString('password'))
 
-  return errorData
+  redirect('/dashboard')
 }
